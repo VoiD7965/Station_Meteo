@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "BME280_STm32.h"
+#include "BME280_STM32.h"
 #include "EPD_4in26.h" //
 #include "EPD_Test.h"
 /* USER CODE END Includes */

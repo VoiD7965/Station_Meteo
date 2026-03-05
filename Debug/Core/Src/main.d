@@ -30,11 +30,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h \
- ../Core/Inc/BME280_STm32.h ../Core/Inc/main.h ../Core/Inc/EPD_4in26.h \
- ../Core/Inc/DEV_Config.h ../Core/Inc/EPD_Test.h \
- ../Core/Inc/../../GUI/GUI_Paint.h ../Core/Inc/DEV_Config.h \
- ../Core/Inc/../../GUI/../Fonts/fonts.h ../Core/Inc/imagedata.h \
- ../Core/Inc/Debug.h
+ ../Drivers/Inc/BME280_STM32.h ../Services/Inc/EPD_4in26.h \
+ ../BSP/Inc/DEV_Config.h ../Services/Inc/EPD_Test.h \
+ ../BSP/Inc/GUI_Paint.h ../BSP/Inc/DEV_Config.h ../Utilities/Inc/fonts.h \
+ ../Core/Inc/imagedata.h ../BSP/Inc/Debug.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
@@ -67,13 +66,12 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h:
-../Core/Inc/BME280_STm32.h:
-../Core/Inc/main.h:
-../Core/Inc/EPD_4in26.h:
-../Core/Inc/DEV_Config.h:
-../Core/Inc/EPD_Test.h:
-../Core/Inc/../../GUI/GUI_Paint.h:
-../Core/Inc/DEV_Config.h:
-../Core/Inc/../../GUI/../Fonts/fonts.h:
+../Drivers/Inc/BME280_STM32.h:
+../Services/Inc/EPD_4in26.h:
+../BSP/Inc/DEV_Config.h:
+../Services/Inc/EPD_Test.h:
+../BSP/Inc/GUI_Paint.h:
+../BSP/Inc/DEV_Config.h:
+../Utilities/Inc/fonts.h:
 ../Core/Inc/imagedata.h:
-../Core/Inc/Debug.h:
+../BSP/Inc/Debug.h:
