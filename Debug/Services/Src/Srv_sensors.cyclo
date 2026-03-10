@@ -1,0 +1,2 @@
+../Services/Src/Srv_sensors.c:13:6:Srv_sensors_init	2
+../Services/Src/Srv_sensors.c:19:6:Srv_sensors_process	1

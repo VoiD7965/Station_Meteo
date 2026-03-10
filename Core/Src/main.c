@@ -21,9 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "BME280_STM32.h"
-#include "EPD_4in26.h" //
-#include "EPD_Test.h"
+#include "Station_meteo.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -64,9 +63,8 @@ static void MX_SPI1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-float Temperature, Pressure, Humidity;
-RTC_TimeTypeDef sTime;
-RTC_DateTypeDef sDate;
+Station_meteo_t Station_meteo;
+
 /* USER CODE END 0 */
 
 /**
@@ -98,14 +96,12 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  //MX_I2C1_Init();
+  MX_I2C1_Init();
   MX_RTC_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
-  //BME280_Config(OSRS_2, OSRS_16, OSRS_1, MODE_NORMAL, T_SB_0p5, IIR_16);
-  EPD_test();
-
+  Station_meteo_init(&Station_meteo);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -115,10 +111,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  BME280_Measure(&Temperature, &Pressure, &Humidity);
-	  HAL_Delay(500);
-	  HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-	  HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+	  Station_meteo_process(&Station_meteo);
+
   }
   /* USER CODE END 3 */
 }

@@ -1,5 +1,6 @@
-BSP/Src/DEV_Config.o: ../BSP/Src/DEV_Config.c ../BSP/Inc/DEV_Config.h \
- ../Core/Inc/main.h ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
+BSP/Src/DEV_Config.o: ../BSP/Src/DEV_Config.c ../App/Inc/Station_meteo.h \
+ ../BSP/Inc/DEV_Config.h ../Core/Inc/main.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h \
@@ -30,6 +31,7 @@ BSP/Src/DEV_Config.o: ../BSP/Src/DEV_Config.c ../BSP/Inc/DEV_Config.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h
+../App/Inc/Station_meteo.h:
 ../BSP/Inc/DEV_Config.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:

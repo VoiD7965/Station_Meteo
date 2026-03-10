@@ -1,5 +1,5 @@
-Services/Src/EPD_4in26.o: ../Services/Src/EPD_4in26.c \
- ../Services/Inc/EPD_4in26.h ../BSP/Inc/DEV_Config.h ../Core/Inc/main.h \
+BSP/Src/EPD_4in26.o: ../BSP/Src/EPD_4in26.c ../App/Inc/Station_meteo.h \
+ ../BSP/Inc/EPD_4in26.h ../BSP/Inc/DEV_Config.h ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
@@ -32,7 +32,8 @@ Services/Src/EPD_4in26.o: ../Services/Src/EPD_4in26.c \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h \
  ../BSP/Inc/Debug.h
-../Services/Inc/EPD_4in26.h:
+../App/Inc/Station_meteo.h:
+../BSP/Inc/EPD_4in26.h:
 ../BSP/Inc/DEV_Config.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:

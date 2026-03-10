@@ -16,6 +16,7 @@ RM := rm -rf
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
 -include BSP/Src/subdir.mk
+-include App/Src/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -65,7 +66,7 @@ main-build: Station_Meteo.elf secondary-outputs
 
 # Tool invocations
 Station_Meteo.elf Station_Meteo.map: $(OBJS) $(USER_OBJS) C:\Users\Rémi\STM32CubeIDE\DevSoft\Station_Meteo\STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Station_Meteo.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Rémi\STM32CubeIDE\DevSoft\Station_Meteo\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Station_Meteo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "Station_Meteo.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Rémi\STM32CubeIDE\DevSoft\Station_Meteo\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Station_Meteo.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

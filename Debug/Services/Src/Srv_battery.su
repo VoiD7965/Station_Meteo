@@ -1,0 +1,2 @@
+../Services/Src/Srv_battery.c:10:6:Srv_battery_init	16	static
+../Services/Src/Srv_battery.c:14:6:Srv_battery_process	16	static
