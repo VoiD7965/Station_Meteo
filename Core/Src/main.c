@@ -111,7 +111,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  Station_meteo_process(&Station_meteo);
+ 	  Station_meteo_process(&Station_meteo);
 
   }
   /* USER CODE END 3 */
@@ -279,6 +279,8 @@ static void MX_RTC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN RTC_Init 2 */
+
+  HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 10, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
 
   /* USER CODE END RTC_Init 2 */
 

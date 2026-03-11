@@ -25,5 +25,8 @@ uint8_t Scheduler_20ms_Task(void)
 
 volatile int deb = 0;
 
+void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc)
+{
 
-HAL_RTCEx_SetWakeUpTimer_IT
+	HAL_RTCEx_SetWakeUpTimer(hrtc, 10, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
+}
