@@ -41,5 +41,6 @@
 "./Utilities/Src/font20.o"
 "./Utilities/Src/font24.o"
 "./Utilities/Src/font24CN.o"
+"./Utilities/Src/font72.o"
 "./Utilities/Src/font8.o"
 "./Utilities/Src/system.o"

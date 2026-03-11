@@ -55,17 +55,17 @@ int EPD_test(void)
     printf("Paint_NewImage\r\n");
     Paint_NewImage(BlackImage, EPD_4in26_WIDTH, EPD_4in26_HEIGHT, 0, WHITE);  
 
-#if 1  // show image for array   
+#if 0  // show image for array
     EPD_4in26_Init_Fast();
     printf("show image for array\r\n");
     Paint_SelectImage(BlackImage);
     Paint_Clear(WHITE);
-    Paint_DrawBitMap(gImage_7in5_V2);
+    Paint_DrawBitMap(gImage_7in5_V2_b);
     EPD_4in26_Display_Fast(BlackImage);
     DEV_Delay_ms(2000);
 #endif
 
-#if 1  // Drawing on the image
+#if 0  // Drawing on the image
 
     EPD_4in26_Init();
     //1.Select Image
@@ -101,12 +101,11 @@ int EPD_test(void)
 
 #if 1
 	printf("Partial refresh\r\n");
-    Paint_NewImage(BlackImage, 200, 50, 0, WHITE);
+    Paint_NewImage(BlackImage, 600, 200, 0, WHITE);
 	PAINT_TIME sPaint_time;
     sPaint_time.Hour = 12;
     sPaint_time.Min = 34;
     sPaint_time.Sec = 56;
-    UBYTE num = 10;
 	for (;;) {
 		sPaint_time.Sec = sPaint_time.Sec + 1;
 		if (sPaint_time.Sec == 60) {
@@ -123,17 +122,13 @@ int EPD_test(void)
 			}
 		}
 		Paint_Clear(WHITE);
-		Paint_DrawTime(20, 10, &sPaint_time, &Font20, WHITE, BLACK);
-		EPD_4in26_Display_Part(BlackImage, 80, 200, 200, 50);
-		DEV_Delay_ms(500);//Analog clock 1s
-		num = num - 1;
-		if(num == 0) {
-			break;
-		}
+		Paint_DrawTime(0, 0, &sPaint_time, &Font72, WHITE, BLACK);
+		EPD_4in26_Display_Part(BlackImage, 0, 100, 600, 200);
+		//DEV_Delay_ms(100);//Analog clock 1s
     }
 #endif
 
-#if 1 // show image for array
+#if 0 // show image for array
     free(BlackImage);
     printf("show Gray------------------------\r\n");
     Imagesize = ((EPD_4in26_WIDTH % 4 == 0)? (EPD_4in26_WIDTH / 4 ): (EPD_4in26_WIDTH / 4 + 1)) * EPD_4in26_HEIGHT;

@@ -16,7 +16,9 @@ void Srv_screen_init(Station_meteo_t *ctx){
 }
 
 void Srv_screen_process(Station_meteo_t *ctx){
-	EPD_display_temperature(ctx);
+	//EPD_test2();
+	EPD_test();
+	//EPD_display_temperature(ctx);
 }
 
 void EPD_display_temperature(Station_meteo_t *ctx)
@@ -53,4 +55,24 @@ void EPD_display_temperature(Station_meteo_t *ctx)
     EPD_4in26_Display_Base(BlackImage);
 
     DEV_Delay_ms(1000);
+}
+
+void EPD_test2()
+{
+    UBYTE *BlackImage;
+    UDOUBLE Imagesize;
+
+    DEV_Module_Init();
+
+    EPD_4in26_Init();
+    EPD_4in26_Clear();
+
+    Imagesize = ((EPD_4in26_WIDTH % 8 == 0) ? (EPD_4in26_WIDTH / 8) : (EPD_4in26_WIDTH / 8 + 1)) * EPD_4in26_HEIGHT;
+
+    BlackImage = (UBYTE *)malloc(Imagesize);
+
+    Paint_NewImage(BlackImage, EPD_4in26_WIDTH, EPD_4in26_HEIGHT, 0, WHITE);
+    Paint_SelectImage(BlackImage);
+    Paint_Clear(WHITE);
+
 }

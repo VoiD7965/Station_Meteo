@@ -13,6 +13,7 @@
 void Srv_screen_init(Station_meteo_t *ctx);
 void Srv_screen_process(Station_meteo_t *ctx);
 
+void EPD_test2(void);
 void EPD_display_temperature(Station_meteo_t *ctx);
 
 
