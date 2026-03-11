@@ -31,7 +31,7 @@ BSP/Src/GUI_Paint.o: ../BSP/Src/GUI_Paint.c ../App/Inc/Station_meteo.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h \
- ../Utilities/Inc/fonts.h ../BSP/Inc/DEV_Config.h ../BSP/Inc/Debug.h
+ ../System/Inc/fonts.h ../BSP/Inc/DEV_Config.h ../BSP/Inc/Debug.h
 ../App/Inc/Station_meteo.h:
 ../BSP/Inc/GUI_Paint.h:
 ../BSP/Inc/DEV_Config.h:
@@ -67,6 +67,6 @@ BSP/Src/GUI_Paint.o: ../BSP/Src/GUI_Paint.c ../App/Inc/Station_meteo.h \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h:
-../Utilities/Inc/fonts.h:
+../System/Inc/fonts.h:
 ../BSP/Inc/DEV_Config.h:
 ../BSP/Inc/Debug.h:
