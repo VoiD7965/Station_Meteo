@@ -7,6 +7,8 @@
 
 #include "system.h"
 
+RTC_AlarmTypeDef sAlarm = {0};
+
 static uint32_t last_tick_20ms = 0;
 
 uint8_t Scheduler_20ms_Task(void)
@@ -20,3 +22,8 @@ uint8_t Scheduler_20ms_Task(void)
     }
     return 0;
 }
+
+volatile int deb = 0;
+
+
+HAL_RTCEx_SetWakeUpTimer_IT

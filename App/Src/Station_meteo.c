@@ -37,6 +37,6 @@ void Station_meteo_process(Station_meteo_t *ctx)
 		//Srv_time_process(ctx);
 
 		//output
-		Srv_screen_process(ctx);
+		//Srv_screen_process(ctx);
 	}
 }
