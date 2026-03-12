@@ -13,14 +13,16 @@ void Station_meteo_init(Station_meteo_t *ctx)
     ctx->sensors.humidity = 0;
     ctx->sensors.pressure = 0;
 
-    ctx->datetime.Sec = 0;
-    ctx->datetime.Min = 0;
-    ctx->datetime.Hour = 0;
-    ctx->datetime.Day = 0;
-    ctx->datetime.Month = 0;
-    ctx->datetime.Year = 0;
+    ctx->datetime.Sec = 45;
+    ctx->datetime.Min = 59;
+    ctx->datetime.Hour = 20;
+    ctx->datetime.Day = 1;
+    ctx->datetime.Month = 1;
+    ctx->datetime.Year = 1;
 
     ctx->battery.batterypc = 0;
+
+    SYS_RTC_Init(ctx);
 
 	Srv_sensors_init(ctx);
 //	Srv_battery_init(ctx);

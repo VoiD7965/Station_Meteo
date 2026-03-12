@@ -1,2 +1,3 @@
 ../System/Src/system.c:18:9:Scheduler_20ms_Task	16	static
 ../System/Src/system.c:30:6:HAL_RTCEx_WakeUpTimerEventCallback	16	static
+../System/Src/system.c:39:6:SYS_RTC_Init	40	static

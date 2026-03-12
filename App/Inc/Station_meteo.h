@@ -19,15 +19,6 @@ typedef struct
 
 } sensors_t;
 
-//typedef struct
-//{
-//	uint8_t secondes; //todo tbd
-//    uint8_t minutes;
-//    uint8_t hours;
-//    uint8_t day;
-//
-//} datetime_t;
-
 typedef struct
 {
 	uint8_t batterypc;

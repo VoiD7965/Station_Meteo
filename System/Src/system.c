@@ -7,7 +7,7 @@
 
 #include "system.h"
 
-RTC_AlarmTypeDef sAlarm = {0};
+RTC_HandleTypeDef hrtc;
 
 static uint32_t last_tick_20ms = 0;
 extern volatile uint8_t Srv_battery_flag;
@@ -34,4 +34,52 @@ void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc)
 	Srv_sensors_flag = 1;
 	Srv_time_flag = 1;
 	//HAL_RTCEx_SetWakeUpTimer(hrtc, 0, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
+}
+
+void SYS_RTC_Init(Station_meteo_t *ctx)
+{
+
+  RTC_TimeTypeDef sTime = {0};
+  RTC_DateTypeDef sDate = {0};
+
+  hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /* Configuration de l'heure depuis ctx */
+  sTime.Hours   = ctx->datetime.Hour;
+  sTime.Minutes = ctx->datetime.Min;
+  sTime.Seconds = ctx->datetime.Sec;
+  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /* Configuration de la date depuis ctx */
+  sDate.WeekDay = RTC_WEEKDAY_MONDAY;
+  sDate.Month   = ctx->datetime.Month;
+  sDate.Date    = ctx->datetime.Day;
+  sDate.Year    = ctx->datetime.Year % 100;
+
+  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /* Wakeup timer toutes les secondes */
+  HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
+
 }
