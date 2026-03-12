@@ -47,7 +47,22 @@ void Srv_screen_process(Station_meteo_t *ctx)
 
                 Paint_Clear(WHITE);
                 Paint_DrawTime(0, 0, &ctx->datetime, &Font72, WHITE, BLACK);
-                EPD_4in26_Display_Part(BlackImage, 0, 100, EPD_4in26_WIDTH, 300);
+                Paint_DrawDate(0, 100, &ctx->datetime, &Font72, WHITE, BLACK);
+
+                /* -------- TEMPERATURE -------- */
+
+                Paint_DrawNumDecimals(0, 220, ctx->sensors.temperature, &Font24, 1, WHITE, BLACK);      // xx.x
+                Paint_DrawString_EN(50, 220, " C", &Font24, BLACK, WHITE);           // unité
+
+                /* -------- HUMIDITE -------- */
+                Paint_DrawNumDecimals(200, 220, ctx->sensors.humidity, &Font24, 0, WHITE, BLACK);      // xx
+                Paint_DrawString_EN(250, 220, " %", &Font24, BLACK, WHITE);           // unité
+
+                /* -------- PRESSION -------- */
+                Paint_DrawNumDecimals(400, 220, ctx->sensors.pressure, &Font24, 0, WHITE, BLACK);      // xxxx
+                Paint_DrawString_EN(450, 220, " hPa", &Font24, BLACK, WHITE);           // unité
+
+                EPD_4in26_Display_Part(BlackImage, 0, 480, EPD_4in26_WIDTH, 300);
 
                 SM_SCREEN = SM_SCREEN_WAIT;
             }
