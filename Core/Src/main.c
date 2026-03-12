@@ -280,7 +280,7 @@ static void MX_RTC_Init(void)
   }
   /* USER CODE BEGIN RTC_Init 2 */
 
-  HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 10, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
+  HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 1-1, RTC_WAKEUPCLOCK_CK_SPRE_16BITS); //todo temp dans app conf
 
   /* USER CODE END RTC_Init 2 */
 

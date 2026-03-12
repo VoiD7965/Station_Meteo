@@ -8,6 +8,9 @@
 #ifndef INC_STATION_METEO_H_
 #define INC_STATION_METEO_H_
 
+#include "stm32l4xx_hal.h"
+#include "GUI_Paint.h"
+
 typedef struct
 {
 	float temperature;
@@ -16,14 +19,14 @@ typedef struct
 
 } sensors_t;
 
-typedef struct
-{
-	uint8_t secondes; //todo tbd
-    uint8_t minutes;
-    uint8_t hours;
-    uint8_t day;
-
-} datetime_t;
+//typedef struct
+//{
+//	uint8_t secondes; //todo tbd
+//    uint8_t minutes;
+//    uint8_t hours;
+//    uint8_t day;
+//
+//} datetime_t;
 
 typedef struct
 {
@@ -34,7 +37,7 @@ typedef struct
 typedef struct
 {
     sensors_t sensors;
-    datetime_t datetime;
+    PAINT_TIME datetime;
     battery_t battery;
 
 } Station_meteo_t;

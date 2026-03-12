@@ -16,6 +16,8 @@
 ../BSP/Src/GUI_Paint.c:707:6:Paint_DrawNum	560	static
 ../BSP/Src/GUI_Paint.c:750:6:Paint_DrawNumDecimals	584	static
 ../BSP/Src/GUI_Paint.c:809:6:Paint_DrawTime	48	static
-../BSP/Src/GUI_Paint.c:835:6:Paint_DrawBitMap	24	static
-../BSP/Src/GUI_Paint.c:860:6:Paint_DrawBitMap_Paste	40	static
-../BSP/Src/GUI_Paint.c:954:6:Paint_DrawBitMap_Block	24	static
+../BSP/Src/GUI_Paint.c:837:6:Paint_DrawTimeNS	48	static
+../BSP/Src/GUI_Paint.c:862:6:Paint_DrawDate	48	static
+../BSP/Src/GUI_Paint.c:890:6:Paint_DrawBitMap	24	static
+../BSP/Src/GUI_Paint.c:915:6:Paint_DrawBitMap_Paste	40	static
+../BSP/Src/GUI_Paint.c:1009:6:Paint_DrawBitMap_Block	24	static

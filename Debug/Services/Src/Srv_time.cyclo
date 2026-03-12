@@ -1,2 +1,2 @@
-../Services/Src/Srv_time.c:10:6:Srv_time_init	1
-../Services/Src/Srv_time.c:14:6:Srv_time_process	1
+../Services/Src/Srv_time.c:16:6:Srv_time_init	1
+../Services/Src/Srv_time.c:21:6:Srv_time_process	4

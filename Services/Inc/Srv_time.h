@@ -13,5 +13,9 @@
 void Srv_screen_init(Station_meteo_t *ctx);
 void Srv_screen_process(Station_meteo_t *ctx);
 
+enum{
+	SM_TIME_START,
+	SM_TIME_WAIT
+};
 
 #endif /* INC_SRV_TIME_H_ */

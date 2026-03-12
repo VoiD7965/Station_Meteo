@@ -11,14 +11,52 @@
 #include "EPD_4in26.h"
 #include <time.h>
 
-void Srv_screen_init(Station_meteo_t *ctx){
+uint8_t SM_SCREEN;
+volatile uint8_t Srv_screen_flag;
+UBYTE *BlackImage;
+UDOUBLE Imagesize;
 
+void Srv_screen_init(Station_meteo_t *ctx)
+{
+
+	DEV_Module_Init();
+    EPD_4in26_Init();
+    EPD_4in26_Clear();
+    DEV_Delay_ms(500);
+
+    Imagesize = ((EPD_4in26_WIDTH % 8 == 0)? (EPD_4in26_WIDTH / 8 ): (EPD_4in26_WIDTH / 8 + 1)) * EPD_4in26_HEIGHT;
+    BlackImage = (UBYTE *)malloc(Imagesize);
+    Paint_NewImage(BlackImage, EPD_4in26_WIDTH, EPD_4in26_HEIGHT, 0, WHITE);
+    Paint_SelectImage(BlackImage);
+    Paint_Clear(WHITE);
+
+    Srv_screen_flag = 1;
+    SM_SCREEN = SM_SCREEN_START;
 }
 
-void Srv_screen_process(Station_meteo_t *ctx){
-	//EPD_test2();
-	EPD_test();
-	//EPD_display_temperature(ctx);
+void Srv_screen_process(Station_meteo_t *ctx)
+{
+
+    switch(SM_SCREEN)
+    {
+        case SM_SCREEN_START:
+
+            if(Srv_screen_flag == 1)
+            {
+                Srv_screen_flag = 0;
+
+                Paint_Clear(WHITE);
+                Paint_DrawTime(0, 0, &ctx->datetime, &Font72, WHITE, BLACK);
+                EPD_4in26_Display_Part(BlackImage, 0, 100, EPD_4in26_WIDTH, 300);
+
+                SM_SCREEN = SM_SCREEN_WAIT;
+            }
+            break;
+
+        case SM_SCREEN_WAIT:
+            SM_SCREEN = SM_SCREEN_START;
+            break;
+    }
 }
 
 void EPD_display_temperature(Station_meteo_t *ctx)

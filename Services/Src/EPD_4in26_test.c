@@ -124,7 +124,7 @@ int EPD_test(void)
 		Paint_Clear(WHITE);
 		Paint_DrawTime(0, 0, &sPaint_time, &Font72, WHITE, BLACK);
 		EPD_4in26_Display_Part(BlackImage, 0, 100, 600, 200);
-		//DEV_Delay_ms(100);//Analog clock 1s
+		//DEV_Delay_ms(100);//Analog clock 1s-
     }
 #endif
 

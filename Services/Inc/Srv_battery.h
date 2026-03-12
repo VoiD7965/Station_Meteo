@@ -13,5 +13,9 @@
 void Srv_battery_init(Station_meteo_t *ctx);
 void Srv_battery_process(Station_meteo_t *ctx);
 
+enum{
+	SM_BATTERY_START,
+	SM_BATTERY_WAIT
+};
 
 #endif /* INC_SRV_BATTERY_H_ */

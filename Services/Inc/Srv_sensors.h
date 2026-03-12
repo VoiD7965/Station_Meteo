@@ -14,5 +14,9 @@
 void Srv_sensors_init(Station_meteo_t *ctx);
 void Srv_sensors_process(Station_meteo_t *ctx);
 
+enum{
+	SM_SENSORS_START,
+	SM_SENSORS_WAIT
+};
 
 #endif /* INC_SRV_SENSORS_H_ */
