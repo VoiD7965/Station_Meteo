@@ -22,7 +22,7 @@ void Srv_screen_init(Station_meteo_t *ctx)
 	DEV_Module_Init();
     EPD_4in26_Init();
     EPD_4in26_Clear();
-    DEV_Delay_ms(500);
+    //DEV_Delay_ms(500);
 
     Imagesize = ((EPD_4in26_WIDTH % 8 == 0)? (EPD_4in26_WIDTH / 8 ): (EPD_4in26_WIDTH / 8 + 1)) * EPD_4in26_HEIGHT;
     BlackImage = (UBYTE *)malloc(Imagesize);

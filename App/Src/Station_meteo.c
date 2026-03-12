@@ -13,12 +13,12 @@ void Station_meteo_init(Station_meteo_t *ctx)
     ctx->sensors.humidity = 0;
     ctx->sensors.pressure = 0;
 
-    ctx->datetime.Sec = 45;
-    ctx->datetime.Min = 59;
-    ctx->datetime.Hour = 20;
-    ctx->datetime.Day = 1;
-    ctx->datetime.Month = 1;
-    ctx->datetime.Year = 1;
+    ctx->datetime.Sec = 0x45;
+    ctx->datetime.Min = 0x59;
+    ctx->datetime.Hour = 0x20;
+    ctx->datetime.Day = 0x01;
+    ctx->datetime.Month = 0x01;
+    ctx->datetime.Year = 0x01;
 
     ctx->battery.batterypc = 0;
 
@@ -41,7 +41,6 @@ void Station_meteo_process(Station_meteo_t *ctx)
 		Srv_time_process(ctx);
 
 		//output
-		//EPD_test();
 		Srv_screen_process(ctx);
 	}
 }
