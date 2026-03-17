@@ -62,7 +62,9 @@ void Srv_screen_process(Station_meteo_t *ctx)
                 Paint_DrawNumDecimals(400, 220, ctx->sensors.pressure, &Font24, 0, WHITE, BLACK);      // xxxx
                 Paint_DrawString_EN(450, 220, " hPa", &Font24, BLACK, WHITE);           // unité
 
-                EPD_4in26_Display_Part(BlackImage, 0, 480, EPD_4in26_WIDTH, 300);
+                Paint_DrawString_EN(0, 250, "THEO LE CACA", &Font72, BLACK, WHITE);
+
+                EPD_4in26_Display_Part(BlackImage, 0, 480, EPD_4in26_WIDTH, 480);
 
                 SM_SCREEN = SM_SCREEN_WAIT;
             }
