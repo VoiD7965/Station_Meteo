@@ -46,23 +46,43 @@ void Srv_screen_process(Station_meteo_t *ctx)
                 Srv_screen_flag = 0;
 
                 Paint_Clear(WHITE);
-                Paint_DrawTime(0, 0, &ctx->datetime, &Font72, WHITE, BLACK);
-                Paint_DrawDate(0, 100, &ctx->datetime, &Font72, WHITE, BLACK);
+                Paint_DrawDate(20, 20, &ctx->datetime, &Font24, WHITE, BLACK);
+                // Dessin icone batterie : Corps (x1, y1, x2, y2)
+                Paint_DrawRectangle(655, 22, 700, 42, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+                Paint_DrawRectangle(700, 28, 705, 36, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+                //Paint_DrawDate(710, 20, & ctx->battery, &Font24, WHITE, BLACK);
+
+                // Ligne horizontale sous le header
+                Paint_DrawLine(20, 65, 780, 65, BLACK, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
+
+                Paint_DrawTime(145, 110, &ctx->datetime, &Font72, WHITE, BLACK);
+
+                // Ligne horizontale sous l'heure
+                Paint_DrawLine(20, 250, 780, 250, BLACK, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
 
                 /* -------- TEMPERATURE -------- */
+                Paint_DrawString_EN(30, 280, " Temperature", &Font24, BLACK, WHITE);
+                Paint_DrawNumDecimals(95, 340, ctx->sensors.temperature, &Font24, 1, WHITE, BLACK);      // xx.x
+                Paint_DrawString_EN(170, 340, "C", &Font24, BLACK, WHITE);           // unité
 
-                Paint_DrawNumDecimals(0, 220, ctx->sensors.temperature, &Font24, 1, WHITE, BLACK);      // xx.x
-                Paint_DrawString_EN(50, 220, " C", &Font24, BLACK, WHITE);           // unité
-
-                /* -------- HUMIDITE -------- */
-                Paint_DrawNumDecimals(200, 220, ctx->sensors.humidity, &Font24, 0, WHITE, BLACK);      // xx
-                Paint_DrawString_EN(250, 220, " %", &Font24, BLACK, WHITE);           // unité
+                // Séparateur vertical 1
+                Paint_DrawLine(266, 270, 266, 410, BLACK, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
 
                 /* -------- PRESSION -------- */
-                Paint_DrawNumDecimals(400, 220, ctx->sensors.pressure, &Font24, 0, WHITE, BLACK);      // xxxx
-                Paint_DrawString_EN(450, 220, " hPa", &Font24, BLACK, WHITE);           // unité
 
-                Paint_DrawString_EN(0, 250, "THEO LE CACA", &Font72, BLACK, WHITE);
+                Paint_DrawString_EN(315, 280, " Pression", &Font24, BLACK, WHITE);
+                Paint_DrawNumDecimals(345, 340, ctx->sensors.pressure, &Font24, 0, WHITE, BLACK);      // xxxx
+                Paint_DrawString_EN(390, 340, " hPa", &Font24, BLACK, WHITE);           // unité
+                // Séparateur vertical 2
+                Paint_DrawLine(533, 270, 533, 410, BLACK, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
+
+                /* -------- HUMIDITE -------- */
+
+                Paint_DrawString_EN(580, 280, " Humidite", &Font24, BLACK, WHITE);
+                Paint_DrawNumDecimals(635, 340, ctx->sensors.humidity, &Font24, 0, WHITE, BLACK);      // xx
+                Paint_DrawString_EN(665, 340, " %", &Font24, BLACK, WHITE);           // unité
+                // Ligne de finition tout en bas
+                Paint_DrawLine(20, 440, 780, 440, BLACK, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
 
                 EPD_4in26_Display_Part(BlackImage, 0, 480, EPD_4in26_WIDTH, 480);
 
