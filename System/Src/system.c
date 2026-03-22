@@ -52,7 +52,7 @@ void SYS_RTC_Init(Station_meteo_t *ctx)
     Error_Handler();
   }
 
-  sDate.WeekDay = RTC_WEEKDAY_MONDAY;
+  sDate.WeekDay = ctx->datetime.WeekDay;
   sDate.Month   = ctx->datetime.Month;
   sDate.Date    = ctx->datetime.Day;
   sDate.Year    = ctx->datetime.Year % 100;

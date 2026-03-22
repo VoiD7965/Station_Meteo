@@ -3315,7 +3315,7 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_rnglists
                 0x00000dca       0x20 ./System/Src/system.o
 
-.debug_line     0x00000000    0x11120
+.debug_line     0x00000000    0x11123
  .debug_line    0x00000000      0x2e8 ./App/Src/Station_meteo.o
  .debug_line    0x000002e8      0x469 ./BSP/Src/DEV_Config.o
  .debug_line    0x00000751      0x84a ./BSP/Src/EPD_4in26.o
@@ -3346,7 +3346,7 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_line    0x000104dc      0x395 ./Services/Src/Srv_time.o
  .debug_line    0x00010871      0x269 ./System/Src/font24.o
  .debug_line    0x00010ada      0x269 ./System/Src/font72.o
- .debug_line    0x00010d43      0x3dd ./System/Src/system.o
+ .debug_line    0x00010d43      0x3e0 ./System/Src/system.o
 
 .debug_str      0x00000000     0x5688
  .debug_str     0x00000000     0x5688 ./App/Src/Station_meteo.o
