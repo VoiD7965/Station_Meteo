@@ -33,6 +33,8 @@ void Srv_time_process(Station_meteo_t *ctx){
 		    ctx->datetime.Day   = sDate.Date;
 		    ctx->datetime.Month = sDate.Month;
 		    ctx->datetime.Year  = 2000 + sDate.Year;
+		    ctx->datetime.WeekDay = sDate.WeekDay;
+
 
 			SM_TIME =SM_TIME_WAIT;
 		}

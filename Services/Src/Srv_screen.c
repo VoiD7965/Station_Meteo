@@ -46,11 +46,19 @@ void Srv_screen_process(Station_meteo_t *ctx)
                 Srv_screen_flag = 0;
 
                 Paint_Clear(WHITE);
-                Paint_DrawDate(20, 20, &ctx->datetime, &Font24, WHITE, BLACK);
+                const char* noms_jours[] = {"ERREUR", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"};
+                const char* jour_a_afficher = noms_jours[ctx->datetime.WeekDay];
+                Paint_DrawString_EN(20, 20, jour_a_afficher, &Font24, BLACK, WHITE);
+                Paint_DrawDate(90, 20, &ctx->datetime, &Font24, WHITE, BLACK);
+
                 // Dessin icone batterie : Corps (x1, y1, x2, y2)
-                Paint_DrawRectangle(655, 22, 700, 42, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
-                Paint_DrawRectangle(700, 28, 705, 36, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
-                //Paint_DrawDate(710, 20, & ctx->battery, &Font24, WHITE, BLACK);
+                Paint_DrawRectangle(675, 22, 720, 42, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+                Paint_DrawRectangle(720, 28, 725, 36, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+                int largeur_max = 41;
+                int remplissage = (largeur_max * ctx->battery.batterypc) / 100;
+                Paint_DrawRectangle(677, 24, 677 + remplissage, 40, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+                Paint_DrawNumDecimals(730, 20, ctx->battery.batterypc, &Font24, 0, WHITE, BLACK);
+                Paint_DrawString_EN(750, 20, " %", &Font24, BLACK, WHITE);           //Pourcentage batterie
 
                 // Ligne horizontale sous le header
                 Paint_DrawLine(20, 65, 780, 65, BLACK, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
@@ -62,7 +70,12 @@ void Srv_screen_process(Station_meteo_t *ctx)
 
                 /* -------- TEMPERATURE -------- */
                 Paint_DrawString_EN(30, 280, " Temperature", &Font24, BLACK, WHITE);
-                Paint_DrawNumDecimals(95, 340, ctx->sensors.temperature, &Font24, 1, WHITE, BLACK);      // xx.x
+                Paint_DrawNumDecimals(85, 340, ctx->sensors.temperature, &Font24, 1, WHITE, BLACK);      // xx.x
+                // NOTE : Le caractère '~' (tilde) est utilisé ici comme un "alias" ou "remplaçant".
+                // Puisque la fonction Paint_DrawString_EN ne supporte pas le symbole '°' (code UTF-8 complexe),
+                // nous avons modifié la table de pixels (font24.c) pour que l'ordinateur dessine un
+                // petit cercle (degré) à chaque fois qu'on lui demande d'afficher un '~'.
+                Paint_DrawString_EN(160, 340, "~", &Font24, BLACK, WHITE);
                 Paint_DrawString_EN(170, 340, "C", &Font24, BLACK, WHITE);           // unité
 
                 // Séparateur vertical 1

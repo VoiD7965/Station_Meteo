@@ -19,8 +19,9 @@ void Station_meteo_init(Station_meteo_t *ctx)
     ctx->datetime.Day = 0x12;
     ctx->datetime.Month = 0x03;
     ctx->datetime.Year = 0x26;
+    ctx->datetime.WeekDay = 0x04;
 
-    ctx->battery.batterypc = 0;
+    ctx->battery.batterypc = 25;
 
     SYS_RTC_Init(ctx);
 
