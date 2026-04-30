@@ -70,13 +70,13 @@ void Srv_screen_process(Station_meteo_t *ctx)
 
                 /* -------- TEMPERATURE -------- */
                 Paint_DrawString_EN(30, 280, " Temperature", &Font24, BLACK, WHITE);
-                Paint_DrawNumDecimals(85, 340, ctx->sensors.temperature, &Font24, 1, WHITE, BLACK);      // xx.x
+                Paint_DrawNumDecimals(30, 340, ctx->sensors.temperature, &Font36, 1, WHITE, BLACK);      // xx.x
                 // NOTE : Le caractère '~' (tilde) est utilisé ici comme un "alias" ou "remplaçant".
                 // Puisque la fonction Paint_DrawString_EN ne supporte pas le symbole '°' (code UTF-8 complexe),
                 // nous avons modifié la table de pixels (font24.c) pour que l'ordinateur dessine un
                 // petit cercle (degré) à chaque fois qu'on lui demande d'afficher un '~'.
-                Paint_DrawString_EN(160, 340, "~", &Font24, BLACK, WHITE);
-                Paint_DrawString_EN(170, 340, "C", &Font24, BLACK, WHITE);           // unité
+                Paint_DrawString_EN(180, 340, "~", &Font36, BLACK, WHITE);
+                Paint_DrawString_EN(200, 340, "C", &Font36, BLACK, WHITE);           // unité
 
                 // Séparateur vertical 1
                 Paint_DrawLine(266, 270, 266, 410, BLACK, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
@@ -84,16 +84,16 @@ void Srv_screen_process(Station_meteo_t *ctx)
                 /* -------- PRESSION -------- */
 
                 Paint_DrawString_EN(315, 280, " Pression", &Font24, BLACK, WHITE);
-                Paint_DrawNumDecimals(345, 340, ctx->sensors.pressure, &Font24, 0, WHITE, BLACK);      // xxxx
-                Paint_DrawString_EN(390, 340, " hPa", &Font24, BLACK, WHITE);           // unité
+                Paint_DrawNumDecimals(280, 340, ctx->sensors.pressure, &Font36, 0, WHITE, BLACK);      // xxxx
+                Paint_DrawString_EN(370, 340, " hPa", &Font36, BLACK, WHITE);           // unité
                 // Séparateur vertical 2
                 Paint_DrawLine(533, 270, 533, 410, BLACK, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
 
                 /* -------- HUMIDITE -------- */
 
                 Paint_DrawString_EN(580, 280, " Humidite", &Font24, BLACK, WHITE);
-                Paint_DrawNumDecimals(635, 340, ctx->sensors.humidity, &Font24, 0, WHITE, BLACK);      // xx
-                Paint_DrawString_EN(665, 340, " %", &Font24, BLACK, WHITE);           // unité
+                Paint_DrawNumDecimals(615, 340, ctx->sensors.humidity, &Font36, 0, WHITE, BLACK);      // xx
+                Paint_DrawString_EN(645, 340, " %", &Font36, BLACK, WHITE);           // unité
                 // Ligne de finition tout en bas
                 Paint_DrawLine(20, 440, 780, 440, BLACK, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
 

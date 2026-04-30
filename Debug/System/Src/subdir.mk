@@ -12,6 +12,8 @@ C_SRCS += \
 ../System/Src/font20.c \
 ../System/Src/font24.c \
 ../System/Src/font24CN.c \
+../System/Src/font36.c \
+../System/Src/font48.c \
 ../System/Src/font72.c \
 ../System/Src/font8.c \
 ../System/Src/system.c 
@@ -24,6 +26,8 @@ OBJS += \
 ./System/Src/font20.o \
 ./System/Src/font24.o \
 ./System/Src/font24CN.o \
+./System/Src/font36.o \
+./System/Src/font48.o \
 ./System/Src/font72.o \
 ./System/Src/font8.o \
 ./System/Src/system.o 
@@ -36,6 +40,8 @@ C_DEPS += \
 ./System/Src/font20.d \
 ./System/Src/font24.d \
 ./System/Src/font24CN.d \
+./System/Src/font36.d \
+./System/Src/font48.d \
 ./System/Src/font72.d \
 ./System/Src/font8.d \
 ./System/Src/system.d 
@@ -48,7 +54,7 @@ System/Src/%.o System/Src/%.su System/Src/%.cyclo: ../System/Src/%.c System/Src/
 clean: clean-System-2f-Src
 
 clean-System-2f-Src:
-	-$(RM) ./System/Src/ImageData.cyclo ./System/Src/ImageData.d ./System/Src/ImageData.o ./System/Src/ImageData.su ./System/Src/font12.cyclo ./System/Src/font12.d ./System/Src/font12.o ./System/Src/font12.su ./System/Src/font12CN.cyclo ./System/Src/font12CN.d ./System/Src/font12CN.o ./System/Src/font12CN.su ./System/Src/font16.cyclo ./System/Src/font16.d ./System/Src/font16.o ./System/Src/font16.su ./System/Src/font20.cyclo ./System/Src/font20.d ./System/Src/font20.o ./System/Src/font20.su ./System/Src/font24.cyclo ./System/Src/font24.d ./System/Src/font24.o ./System/Src/font24.su ./System/Src/font24CN.cyclo ./System/Src/font24CN.d ./System/Src/font24CN.o ./System/Src/font24CN.su ./System/Src/font72.cyclo ./System/Src/font72.d ./System/Src/font72.o ./System/Src/font72.su ./System/Src/font8.cyclo ./System/Src/font8.d ./System/Src/font8.o ./System/Src/font8.su ./System/Src/system.cyclo ./System/Src/system.d ./System/Src/system.o ./System/Src/system.su
+	-$(RM) ./System/Src/ImageData.cyclo ./System/Src/ImageData.d ./System/Src/ImageData.o ./System/Src/ImageData.su ./System/Src/font12.cyclo ./System/Src/font12.d ./System/Src/font12.o ./System/Src/font12.su ./System/Src/font12CN.cyclo ./System/Src/font12CN.d ./System/Src/font12CN.o ./System/Src/font12CN.su ./System/Src/font16.cyclo ./System/Src/font16.d ./System/Src/font16.o ./System/Src/font16.su ./System/Src/font20.cyclo ./System/Src/font20.d ./System/Src/font20.o ./System/Src/font20.su ./System/Src/font24.cyclo ./System/Src/font24.d ./System/Src/font24.o ./System/Src/font24.su ./System/Src/font24CN.cyclo ./System/Src/font24CN.d ./System/Src/font24CN.o ./System/Src/font24CN.su ./System/Src/font36.cyclo ./System/Src/font36.d ./System/Src/font36.o ./System/Src/font36.su ./System/Src/font48.cyclo ./System/Src/font48.d ./System/Src/font48.o ./System/Src/font48.su ./System/Src/font72.cyclo ./System/Src/font72.d ./System/Src/font72.o ./System/Src/font72.su ./System/Src/font8.cyclo ./System/Src/font8.d ./System/Src/font8.o ./System/Src/font8.su ./System/Src/system.cyclo ./System/Src/system.d ./System/Src/system.o ./System/Src/system.su
 
 .PHONY: clean-System-2f-Src
 
