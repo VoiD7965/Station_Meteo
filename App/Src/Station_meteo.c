@@ -13,13 +13,13 @@ void Station_meteo_init(Station_meteo_t *ctx)
     ctx->sensors.humidity = 0;
     ctx->sensors.pressure = 0;
 
-    ctx->datetime.Sec = 0x45;
+    ctx->datetime.Sec = 0x50;
     ctx->datetime.Min = 0x59;
-    ctx->datetime.Hour = 0x23;
-    ctx->datetime.Day = 0x12;
-    ctx->datetime.Month = 0x03;
-    ctx->datetime.Year = 0x26;
-    ctx->datetime.WeekDay = 0x04;
+    ctx->datetime.Hour = 0x01;
+    ctx->datetime.Day = 0x27;
+    ctx->datetime.Month = 0x10;
+    ctx->datetime.Year = 0x24;
+    ctx->datetime.WeekDay = 0x07;
 
     ctx->battery.batterypc = 25;
 
