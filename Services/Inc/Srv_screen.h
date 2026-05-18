@@ -17,7 +17,8 @@ void EPD_test2(void);
 void EPD_display_temperature(Station_meteo_t *ctx);
 
 enum{
-	SM_SCREEN_START,
+	SM_SCREEN_HOURLY,
+	SM_SCREEN_PARTIAL,
 	SM_SCREEN_WAIT
 };
 

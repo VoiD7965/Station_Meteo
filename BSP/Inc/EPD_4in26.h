@@ -48,5 +48,7 @@ void EPD_4in26_Display_Part(UBYTE *Image, UWORD x, UWORD y, UWORD w, UWORD l);
 void EPD_4in26_4GrayDisplay(UBYTE *Image);
 void EPD_4in26_Sleep(void);
 
+void EPD_4in26_Init_Partial_NoReset(void);
+void EPD_4in26_Display_Partial_True(UBYTE *Image);
 
 #endif

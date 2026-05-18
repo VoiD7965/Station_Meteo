@@ -1,4 +1,6 @@
-../Services/Src/Srv_screen.c:19:6:Srv_screen_init	1
-../Services/Src/Srv_screen.c:37:6:Srv_screen_process	4
-../Services/Src/Srv_screen.c:112:6:EPD_display_temperature	2
-../Services/Src/Srv_screen.c:148:6:EPD_test2	1
+../Services/Src/Srv_screen.c:22:13:_draw_static_ui	1
+../Services/Src/Srv_screen.c:37:13:_draw_dynamic_data	2
+../Services/Src/Srv_screen.c:70:6:Srv_screen_init	2
+../Services/Src/Srv_screen.c:87:6:Srv_screen_process	8
+../Services/Src/Srv_screen.c:130:6:EPD_display_temperature	2
+../Services/Src/Srv_screen.c:166:6:EPD_test2	1

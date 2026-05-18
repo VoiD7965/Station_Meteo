@@ -1,4 +1,6 @@
-../Services/Src/Srv_screen.c:19:6:Srv_screen_init	24	static
-../Services/Src/Srv_screen.c:37:6:Srv_screen_process	88	static
-../Services/Src/Srv_screen.c:112:6:EPD_display_temperature	48	static
-../Services/Src/Srv_screen.c:148:6:EPD_test2	24	static
+../Services/Src/Srv_screen.c:22:13:_draw_static_ui	24	static
+../Services/Src/Srv_screen.c:37:13:_draw_dynamic_data	112	static
+../Services/Src/Srv_screen.c:70:6:Srv_screen_init	24	static
+../Services/Src/Srv_screen.c:87:6:Srv_screen_process	32	static
+../Services/Src/Srv_screen.c:130:6:EPD_display_temperature	48	static
+../Services/Src/Srv_screen.c:166:6:EPD_test2	24	static

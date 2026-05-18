@@ -6,109 +6,127 @@
  */
 
 #include "Srv_screen.h"
-
-#include "EPD_Test.h"
 #include "EPD_4in26.h"
-#include <time.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 uint8_t SM_SCREEN;
 volatile uint8_t Srv_screen_flag;
-UBYTE *BlackImage;
+UBYTE *BlackImage = NULL;
 UDOUBLE Imagesize;
+
+static int last_minute = -1;
+static int last_hour = -1;
+
+// --- DESSIN DU DÉCOR FIXE ---
+static void _draw_static_ui(void)
+{
+    Paint_DrawLine(20, 65, 780, 65, BLACK, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
+    Paint_DrawLine(20, 250, 780, 250, BLACK, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
+    Paint_DrawLine(20, 440, 780, 440, BLACK, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
+
+    Paint_DrawLine(266, 270, 266, 410, BLACK, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
+    Paint_DrawLine(533, 270, 533, 410, BLACK, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
+
+    Paint_DrawString_EN(30, 280, "Temperature", &Font24, BLACK, WHITE);
+    Paint_DrawString_EN(315, 280, "Pression", &Font24, BLACK, WHITE);
+    Paint_DrawString_EN(580, 280, "Humidite", &Font24, BLACK, WHITE);
+}
+
+// --- DESSIN DES DONNÉES VARIABLES ---
+static void _draw_dynamic_data(Station_meteo_t *ctx)
+{
+    char buf[32];
+
+    // Date
+    const char* noms_jours[] = {"ERR", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"};
+    uint8_t wd = (ctx->datetime.WeekDay < 8) ? ctx->datetime.WeekDay : 0;
+    sprintf(buf, "%s %02d/%02d/%04d", noms_jours[wd], ctx->datetime.Day, ctx->datetime.Month, (int)ctx->datetime.Year + 2000);
+    Paint_DrawString_EN(20, 20, buf, &Font24, BLACK, WHITE);
+
+    // Batterie
+    sprintf(buf, "%d%%", ctx->battery.batterypc);
+    Paint_DrawString_EN(640, 20, buf, &Font24, BLACK, WHITE);
+    Paint_DrawRectangle(700, 22, 745, 42, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+    Paint_DrawRectangle(745, 28, 750, 36, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    int remplissage = (41 * ctx->battery.batterypc) / 100;
+    Paint_DrawRectangle(702, 24, 702 + remplissage, 40, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+
+    // Heure
+    sprintf(buf, "%02d:%02d", ctx->datetime.Hour, ctx->datetime.Min);
+    Paint_DrawString_EN(280, 110, buf, &Font72, BLACK, WHITE);
+
+    // Capteurs + Unités (pour éviter qu'elles s'effacent)
+    sprintf(buf, "%.1f ~C", ctx->sensors.temperature);
+    Paint_DrawString_EN(30, 340, buf, &Font36, BLACK, WHITE);
+
+    sprintf(buf, "%d hPa", (int)ctx->sensors.pressure);
+    Paint_DrawString_EN(275, 340, buf, &Font36, BLACK, WHITE);
+
+    sprintf(buf, "%d %%", (int)ctx->sensors.humidity);
+    Paint_DrawString_EN(600, 340, buf, &Font36, BLACK, WHITE);
+}
 
 void Srv_screen_init(Station_meteo_t *ctx)
 {
+    DEV_Module_Init();
+    Imagesize = ((EPD_4in26_WIDTH % 8 == 0)? (EPD_4in26_WIDTH / 8 ): (EPD_4in26_WIDTH / 8 + 1)) * EPD_4in26_HEIGHT;
+    if (BlackImage == NULL) BlackImage = (UBYTE *)malloc(Imagesize);
 
-	DEV_Module_Init();
+    Paint_NewImage(BlackImage, EPD_4in26_WIDTH, EPD_4in26_HEIGHT, ROTATE_0, WHITE);
+    Paint_SelectImage(BlackImage);
+    Paint_SetRotate(ROTATE_0);
+
     EPD_4in26_Init();
     EPD_4in26_Clear();
-    //DEV_Delay_ms(500);
-
-    Imagesize = ((EPD_4in26_WIDTH % 8 == 0)? (EPD_4in26_WIDTH / 8 ): (EPD_4in26_WIDTH / 8 + 1)) * EPD_4in26_HEIGHT;
-    BlackImage = (UBYTE *)malloc(Imagesize);
-    Paint_NewImage(BlackImage, EPD_4in26_WIDTH, EPD_4in26_HEIGHT, 0, WHITE);
-    Paint_SelectImage(BlackImage);
-    Paint_Clear(WHITE);
 
     Srv_screen_flag = 1;
-    SM_SCREEN = SM_SCREEN_START;
+    SM_SCREEN = SM_SCREEN_WAIT;
 }
 
 void Srv_screen_process(Station_meteo_t *ctx)
 {
-
     switch(SM_SCREEN)
     {
-        case SM_SCREEN_START:
-
-            if(Srv_screen_flag == 1)
-            {
-                Srv_screen_flag = 0;
-
-                Paint_Clear(WHITE);
-                const char* noms_jours[] = {"ERREUR", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"};
-                const char* jour_a_afficher = noms_jours[ctx->datetime.WeekDay];
-                Paint_DrawString_EN(20, 20, jour_a_afficher, &Font24, BLACK, WHITE);
-                Paint_DrawDate(90, 20, &ctx->datetime, &Font24, WHITE, BLACK);
-
-                // Dessin icone batterie : Corps (x1, y1, x2, y2)
-                Paint_DrawRectangle(675, 22, 720, 42, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
-                Paint_DrawRectangle(720, 28, 725, 36, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
-                int largeur_max = 41;
-                int remplissage = (largeur_max * ctx->battery.batterypc) / 100;
-                Paint_DrawRectangle(677, 24, 677 + remplissage, 40, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
-                Paint_DrawNumDecimals(730, 20, ctx->battery.batterypc, &Font24, 0, WHITE, BLACK);
-                Paint_DrawString_EN(750, 20, " %", &Font24, BLACK, WHITE);           //Pourcentage batterie
-
-                // Ligne horizontale sous le header
-                Paint_DrawLine(20, 65, 780, 65, BLACK, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
-
-                Paint_DrawTime(145, 110, &ctx->datetime, &Font72, WHITE, BLACK);
-
-                // Ligne horizontale sous l'heure
-                Paint_DrawLine(20, 250, 780, 250, BLACK, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
-
-                /* -------- TEMPERATURE -------- */
-                Paint_DrawString_EN(30, 280, " Temperature", &Font24, BLACK, WHITE);
-                Paint_DrawNumDecimals(30, 340, ctx->sensors.temperature, &Font36, 1, WHITE, BLACK);      // xx.x
-                // NOTE : Le caractère '~' (tilde) est utilisé ici comme un "alias" ou "remplaçant".
-                // Puisque la fonction Paint_DrawString_EN ne supporte pas le symbole '°' (code UTF-8 complexe),
-                // nous avons modifié la table de pixels (font24.c) pour que l'ordinateur dessine un
-                // petit cercle (degré) à chaque fois qu'on lui demande d'afficher un '~'.
-                Paint_DrawString_EN(180, 340, "~", &Font36, BLACK, WHITE);
-                Paint_DrawString_EN(200, 340, "C", &Font36, BLACK, WHITE);           // unité
-
-                // Séparateur vertical 1
-                Paint_DrawLine(266, 270, 266, 410, BLACK, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
-
-                /* -------- PRESSION -------- */
-
-                Paint_DrawString_EN(315, 280, " Pression", &Font24, BLACK, WHITE);
-                Paint_DrawNumDecimals(280, 340, ctx->sensors.pressure, &Font36, 0, WHITE, BLACK);      // xxxx
-                Paint_DrawString_EN(370, 340, " hPa", &Font36, BLACK, WHITE);           // unité
-                // Séparateur vertical 2
-                Paint_DrawLine(533, 270, 533, 410, BLACK, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
-
-                /* -------- HUMIDITE -------- */
-
-                Paint_DrawString_EN(580, 280, " Humidite", &Font24, BLACK, WHITE);
-                Paint_DrawNumDecimals(615, 340, ctx->sensors.humidity, &Font36, 0, WHITE, BLACK);      // xx
-                Paint_DrawString_EN(645, 340, " %", &Font36, BLACK, WHITE);           // unité
-                // Ligne de finition tout en bas
-                Paint_DrawLine(20, 440, 780, 440, BLACK, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
-
-                EPD_4in26_Display_Part(BlackImage, 0, 480, EPD_4in26_WIDTH, 480);
-
-                SM_SCREEN = SM_SCREEN_WAIT;
-            }
+        case SM_SCREEN_WAIT:
+            if (ctx->datetime.Hour != last_hour || Srv_screen_flag == 1)
+                SM_SCREEN = SM_SCREEN_HOURLY;
+            else if (ctx->datetime.Min != last_minute)
+                SM_SCREEN = SM_SCREEN_PARTIAL;
             break;
 
-        case SM_SCREEN_WAIT:
-            SM_SCREEN = SM_SCREEN_START;
+        case SM_SCREEN_HOURLY:
+            EPD_4in26_Init(); // FULL INIT (Reset physique + Flash noir)
+            Paint_Clear(WHITE);
+            _draw_static_ui();
+            _draw_dynamic_data(ctx);
+            EPD_4in26_Display_Base(BlackImage);
+
+            last_hour = ctx->datetime.Hour;
+            last_minute = ctx->datetime.Min;
+            Srv_screen_flag = 0;
+            SM_SCREEN = SM_SCREEN_WAIT;
+            break;
+
+        case SM_SCREEN_PARTIAL:
+            // --- GOMMAGE DE LA RAM (Rectangles blancs) ---
+            Paint_DrawRectangle(0, 0, 800, 63, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);      // Header
+            Paint_DrawRectangle(0, 67, 800, 248, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);    // Heure
+            Paint_DrawRectangle(25, 330, 250, 410, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);  // Temp
+            Paint_DrawRectangle(270, 330, 530, 410, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL); // Press
+            Paint_DrawRectangle(540, 330, 780, 410, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL); // Humid
+
+            _draw_dynamic_data(ctx);
+
+            // On n'appelle PAS Init_Partial si on n'utilise pas le Sleep
+            // On envoie directement les données avec la fonction sans flash
+            EPD_4in26_Display_Partial_True(BlackImage);
+
+            last_minute = ctx->datetime.Min;
+            SM_SCREEN = SM_SCREEN_WAIT;
             break;
     }
 }
-
 void EPD_display_temperature(Station_meteo_t *ctx)
 {
     static UBYTE *BlackImage;
