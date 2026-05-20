@@ -1,3 +1,5 @@
-../Services/Src/Srv_time.c:19:12:isSummerTime	13
-../Services/Src/Srv_time.c:55:6:Srv_time_init	1
-../Services/Src/Srv_time.c:60:6:Srv_time_process	7
+../Services/Src/Srv_time.c:15:16:isLeapYear	4
+../Services/Src/Srv_time.c:20:16:getLastSunday	5
+../Services/Src/Srv_time.c:61:16:isSummerTime	11
+../Services/Src/Srv_time.c:116:6:Srv_time_init	1
+../Services/Src/Srv_time.c:122:6:Srv_time_process	6

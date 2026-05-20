@@ -1,3 +1,5 @@
-../Services/Src/Srv_time.c:19:12:isSummerTime	24	static
-../Services/Src/Srv_time.c:55:6:Srv_time_init	16	static
-../Services/Src/Srv_time.c:60:6:Srv_time_process	40	static
+../Services/Src/Srv_time.c:15:16:isLeapYear	16	static
+../Services/Src/Srv_time.c:20:16:getLastSunday	48	static
+../Services/Src/Srv_time.c:61:16:isSummerTime	32	static
+../Services/Src/Srv_time.c:116:6:Srv_time_init	16	static
+../Services/Src/Srv_time.c:122:6:Srv_time_process	24	static

@@ -30,10 +30,10 @@ uint8_t Scheduler_20ms_Task(void)
 void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc)
 {
 	Srv_battery_flag = 1;
-	//Srv_screen_flag = 1;
+	Srv_screen_flag = 1;
 	Srv_sensors_flag = 1;
 	Srv_time_flag = 1;
-	//HAL_RTCEx_SetWakeUpTimer(hrtc, 0, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
+	HAL_RTCEx_SetWakeUpTimer(hrtc, rtc_refresh, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
 }
 
 void SYS_RTC_Init(Station_meteo_t *ctx)

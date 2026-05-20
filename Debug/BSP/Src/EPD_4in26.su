@@ -20,5 +20,3 @@
 ../BSP/Src/EPD_4in26.c:422:6:EPD_4in26_Display_Part	40	static
 ../BSP/Src/EPD_4in26.c:448:6:EPD_4in26_4GrayDisplay	32	static
 ../BSP/Src/EPD_4in26.c:541:6:EPD_4in26_Sleep	8	static
-../BSP/Src/EPD_4in26.c:549:6:EPD_4in26_Init_Partial_NoReset	8	static
-../BSP/Src/EPD_4in26.c:567:6:EPD_4in26_Display_Partial_True	24	static

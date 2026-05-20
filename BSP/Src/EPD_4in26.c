@@ -546,38 +546,38 @@ void EPD_4in26_Sleep(void)
 }
 
 
-void EPD_4in26_Init_Partial_NoReset(void)
-{
-    EPD_4in26_ReadBusy();
-    EPD_4in26_SendCommand(0x12);  // Software Reset uniquement
-    EPD_4in26_ReadBusy();
-
-    EPD_4in26_SendCommand(0x18); // Temp sensor
-    EPD_4in26_SendData(0x80);
-
-    EPD_4in26_SendCommand(0x3C); // Border
-    EPD_4in26_SendData(0x80);
-
-    EPD_4in26_SetWindows(0, EPD_4in26_HEIGHT-1, EPD_4in26_WIDTH-1, 0);
-    EPD_4in26_SetCursor(0, 0);
-    EPD_4in26_ReadBusy();
-}
-
-// Envoi de l'image en mode "Vrai Partiel" (0xFF)
-void EPD_4in26_Display_Partial_True(UBYTE *Image)
-{
-    UWORD i;
-    UWORD height = EPD_4in26_HEIGHT;
-    UWORD width = EPD_4in26_WIDTH/8;
-
-    EPD_4in26_SendCommand(0x24);   // Write RAM New Data
-    for(i=0; i<height; i++)
-    {
-        EPD_4in26_SendData2((UBYTE *)(Image+i*width), width);
-    }
-
-    EPD_4in26_SendCommand(0x22);
-    EPD_4in26_SendData(0xFF);    // 0xFF = Mode Partial sans flash
-    EPD_4in26_SendCommand(0x20);
-    EPD_4in26_ReadBusy();
-}
+//void EPD_4in26_Init_Partial_NoReset(void)
+//{
+//    EPD_4in26_ReadBusy();
+//    EPD_4in26_SendCommand(0x12);  // Software Reset uniquement
+//    EPD_4in26_ReadBusy();
+//
+//    EPD_4in26_SendCommand(0x18); // Temp sensor
+//    EPD_4in26_SendData(0x80);
+//
+//    EPD_4in26_SendCommand(0x3C); // Border
+//    EPD_4in26_SendData(0x80);
+//
+//    EPD_4in26_SetWindows(0, EPD_4in26_HEIGHT-1, EPD_4in26_WIDTH-1, 0);
+//    EPD_4in26_SetCursor(0, 0);
+//    EPD_4in26_ReadBusy();
+//}
+//
+//// Envoi de l'image en mode "Vrai Partiel" (0xFF)
+//void EPD_4in26_Display_Partial_True(UBYTE *Image)
+//{
+//    UWORD i;
+//    UWORD height = EPD_4in26_HEIGHT;
+//    UWORD width = EPD_4in26_WIDTH/8;
+//
+//    EPD_4in26_SendCommand(0x24);   // Write RAM New Data
+//    for(i=0; i<height; i++)
+//    {
+//        EPD_4in26_SendData2((UBYTE *)(Image+i*width), width);
+//    }
+//
+//    EPD_4in26_SendCommand(0x22);
+//    EPD_4in26_SendData(0xFF);    // 0xFF = Mode Partial sans flash
+//    EPD_4in26_SendCommand(0x20);
+//    EPD_4in26_ReadBusy();
+//}

@@ -9,6 +9,7 @@
 #define INC_SYSTEM_H_
 
 #include "stm32l4xx_hal.h"
+#include "Station_meteo.h"
 
 uint8_t Scheduler_20ms_Task(void);
 void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc);

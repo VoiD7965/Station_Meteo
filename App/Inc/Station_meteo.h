@@ -11,6 +11,8 @@
 #include "stm32l4xx_hal.h"
 #include "GUI_Paint.h"
 
+#define rtc_refresh 2
+
 typedef struct
 {
 	float temperature;
