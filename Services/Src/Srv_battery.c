@@ -16,6 +16,31 @@ typedef struct
     uint8_t percent;
 } BatteryPoint;
 
+/* =========================
+   Configuration hardware
+   ========================= */
+
+/* Chute MOSFET anti inversion */
+#define BATTERY_DIODE_DROP     0.30f
+
+/* Pont diviseur */
+#define R1                     33000.0f
+#define R2                     10000.0f
+
+/* Gain du pont diviseur */
+#define ADC_DIVIDER_GAIN       (R2 / (R1 + R2))
+
+/* Référence ADC */
+#define ADC_VREF               3.300f
+
+/* ADC 12 bits STM32 */
+#define ADC_MAX                4095.0f
+
+/* =========================
+   Lookup table batterie
+   (vraie tension cellule)
+   ========================= */
+
 BatteryPoint batteryTable[20] =
 {
     {4.20, 100},
@@ -39,6 +64,27 @@ BatteryPoint batteryTable[20] =
     {3.45, 10},
     {3.20, 0}
 };
+
+/* =========================
+   Conversion ADC -> tension batterie
+   ========================= */
+
+float Battery_ADCToVoltage(uint16_t adc)
+{
+    float adcVoltage;
+    float batteryVoltage;
+
+    /* tension réellement vue par l'ADC */
+    adcVoltage = ((float)adc * ADC_VREF) / ADC_MAX;
+
+    /* remonte le pont diviseur */
+    batteryVoltage = adcVoltage / ADC_DIVIDER_GAIN;
+
+    /* rajoute la chute du MOSFET */
+    batteryVoltage += BATTERY_DIODE_DROP;
+
+    return batteryVoltage;
+}
 
 void Srv_battery_init(Station_meteo_t *ctx){
 	Srv_battery_flag = 1;
