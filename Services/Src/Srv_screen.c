@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-uint8_t SM_SCREEN;
+SM_SCREEN_t SM_SCREEN;
 volatile uint8_t Srv_screen_flag;
 UBYTE *BlackImage = NULL;
 UDOUBLE Imagesize;

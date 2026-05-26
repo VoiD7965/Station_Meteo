@@ -7,38 +7,29 @@
 
 #include "Station_meteo.h"
 
+extern RTC_HandleTypeDef hrtc;
+
 void Station_meteo_init(Station_meteo_t *ctx)
 {
-//    ctx->sensors.temperature = 0;
-//    ctx->sensors.humidity = 0;
-//    ctx->sensors.pressure = 0;
-//
-//    ctx->datetime.Sec = 0x50;
-//    ctx->datetime.Min = 0x59;
-//    ctx->datetime.Hour = 0x23;
-//    ctx->datetime.Day = 0x24;
-//    ctx->datetime.Month = 0x10;
-//    ctx->datetime.Year = 0x26;
-//    ctx->datetime.WeekDay = 0x07;
-//
-//    ctx->battery.batterypc = 1;
-
 
     ctx->sensors.temperature = 0;
     ctx->sensors.humidity = 0;
     ctx->sensors.pressure = 0;
 
-    ctx->datetime.Sec = 0x50;
-    ctx->datetime.Min = 0x59;
-    ctx->datetime.Hour = 0x01;
-    ctx->datetime.Day = 0x20;
-    ctx->datetime.Month = 0x10;
-    ctx->datetime.Year = 0x24;
+    ctx->datetime.Sec = 0x00;
+    ctx->datetime.Min = 0x00;
+    ctx->datetime.Hour = 0x03;
+    ctx->datetime.Day = 0x25;
     ctx->datetime.WeekDay = 0x07;
+    ctx->datetime.Month = 0x10;
+    ctx->datetime.Year = 0x26;
 
     ctx->battery.batterypc = 25;
 
     SYS_RTC_Init(ctx);
+
+    HAL_RTC_DST_SetStoreOperation(&hrtc);
+    //HAL_RTC_DST_ClearStoreOperation(&hrtc);
 
 	Srv_sensors_init(ctx);
 //	Srv_battery_init(ctx);

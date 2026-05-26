@@ -7,7 +7,7 @@
 
 #include "Srv_battery.h"
 
-uint8_t SM_BATTERY;
+SM_BATTERY_t SM_BATTERY;
 volatile uint8_t Srv_battery_flag;
 
 void Srv_battery_init(Station_meteo_t *ctx){

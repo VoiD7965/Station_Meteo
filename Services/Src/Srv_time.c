@@ -6,83 +6,100 @@
 
 #include "Srv_time.h"
 
-uint8_t SM_TIME;
+SM_TIME_t SM_TIME;
 volatile uint8_t Srv_time_flag;
 RTC_TimeTypeDef sTime;
 RTC_DateTypeDef sDate;
 extern RTC_HandleTypeDef hrtc;
 
-static int isSummerTime(uint8_t d, uint8_t m, uint8_t y, uint8_t h, uint8_t wd) {
-
-    if (m < 3 || m > 10) return 0;
-    if (m > 3 && m < 10) return 1;
-
-    int sundayDate = d + (7 - wd);
-
-    // --- CAS DE MARS ---
-    if (m == 3) {
-        if (sundayDate <= 31) {
-            if (d < sundayDate) return 0;
-            if (d == sundayDate) return (h >= 2);
-        }
-        return 1;
-    }
-
-    // --- CAS D'OCTOBRE ---
-    if (m == 10) {
-        if (sundayDate <= 31) {
-            if (d < sundayDate) return 1;
-            if (d == sundayDate) return (h < 2);
-        }
-        return 0;
-    }
-
-    return 0;
-}
-
 void Srv_time_init(Station_meteo_t *ctx){
-	Srv_time_flag = 1;
-	SM_TIME = SM_TIME_START;
+    Srv_time_flag = 1;
+    SM_TIME = SM_TIME_START;
 }
 
-void Srv_time_process(Station_meteo_t *ctx){
+void Srv_time_process(Station_meteo_t *ctx)
+{
+    switch(SM_TIME)
+    {
+        case SM_TIME_START:
 
-	switch(SM_TIME){
-		case SM_TIME_START:
-			if(Srv_time_flag == 1){
-				Srv_time_flag = 0;
+            if(Srv_time_flag == 1)
+            {
+                Srv_time_flag = 0;
 
-				// 1. Lecture de l'heure brute (RTC Matériel)
-				HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-				HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+                HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+                HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
 
-				// 2. Calcul de l'heure d'affichage
-				uint8_t displayHour = sTime.Hours;
-				uint8_t displayDay  = sDate.Date;
+                ctx->datetime.Sec      = sTime.Seconds;
+                ctx->datetime.Min      = sTime.Minutes;
+                ctx->datetime.Hour     = sTime.Hours;
+                ctx->datetime.Day      = sDate.Date;
+                ctx->datetime.Month    = sDate.Month;
+                ctx->datetime.Year     = 2000 + sDate.Year;
+                ctx->datetime.WeekDay  = sDate.WeekDay;
 
-				if (isSummerTime(sDate.Date, sDate.Month, sDate.Year, sTime.Hours, sDate.WeekDay)) {
-					displayHour += 1;
-					if (displayHour >= 24) {
-						displayHour = 0;
-					}
-				}
+                SM_TIME = SM_TIME_CHECK_DST;
+            }
 
-				// 3. Mise à jour du contexte (ce qui sera affiché sur l'écran)
-				ctx->datetime.Sec      = sTime.Seconds;
-				ctx->datetime.Min      = sTime.Minutes;
-				ctx->datetime.Hour     = displayHour; // Valeur modifiée
-				ctx->datetime.Day      = displayDay;
-				ctx->datetime.Month    = sDate.Month;
-				ctx->datetime.Year     = 2000 + sDate.Year;
-				ctx->datetime.WeekDay  = sDate.WeekDay;
+            break;
 
-				SM_TIME = SM_TIME_WAIT;
-			}
-			break;
+        case SM_TIME_CHECK_DST:
 
-		case SM_TIME_WAIT:
-			// Le flag sera remis à 1 par ton scheduler ou la boucle
-			SM_TIME = SM_TIME_START;
-			break;
-	}
+            if((ctx->datetime.Month == 3)                                  &&
+               (ctx->datetime.WeekDay == RTC_WEEKDAY_SUNDAY)               &&
+               (ctx->datetime.Day >= 25)                                   &&
+               (ctx->datetime.Hour == 2)                                   &&
+               (HAL_RTC_DST_ReadStoreOperation(&hrtc) == 0))
+            {
+                SM_TIME = SM_TIME_SUMMER;
+            }
+
+            else if((ctx->datetime.Month == 10)                            &&
+                    (ctx->datetime.WeekDay == RTC_WEEKDAY_SUNDAY)          &&
+                    (ctx->datetime.Day >= 25)                              &&
+                    (ctx->datetime.Hour == 3)                              &&
+                    (HAL_RTC_DST_ReadStoreOperation(&hrtc) != 0))
+            {
+                SM_TIME = SM_TIME_WINTER;
+            }
+
+            else
+            {
+                SM_TIME = SM_TIME_WAIT;
+            }
+
+            break;
+
+        case SM_TIME_SUMMER:
+
+            if(HAL_RTC_DST_ReadStoreOperation(&hrtc) == 0)
+            {
+                HAL_RTC_DST_Add1Hour(&hrtc);
+
+                HAL_RTC_DST_SetStoreOperation(&hrtc);
+            }
+
+            SM_TIME = SM_TIME_WAIT;
+
+            break;
+
+        case SM_TIME_WINTER:
+
+            if(HAL_RTC_DST_ReadStoreOperation(&hrtc) != 0)
+            {
+                HAL_RTC_DST_Sub1Hour(&hrtc);
+
+                HAL_RTC_DST_ClearStoreOperation(&hrtc);
+            }
+
+            SM_TIME = SM_TIME_WAIT;
+
+            break;
+
+        case SM_TIME_WAIT:
+
+            SM_TIME = SM_TIME_START;
+
+            break;
+    }
 }

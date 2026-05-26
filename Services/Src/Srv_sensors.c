@@ -7,7 +7,7 @@
 
 #include "Srv_sensors.h"
 
-uint8_t SM_SENSORS;
+SM_SENSORS_t SM_SENSORS;
 volatile uint8_t Srv_sensors_flag;
 static float temperature, pressure, humidity;
 //static float temperature_neg = -10.2f;

@@ -45,8 +45,6 @@ void SYS_RTC_Init(Station_meteo_t *ctx)
   sTime.Hours   = ctx->datetime.Hour;
   sTime.Minutes = ctx->datetime.Min;
   sTime.Seconds = ctx->datetime.Sec;
-  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
   if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
   {
     Error_Handler();
