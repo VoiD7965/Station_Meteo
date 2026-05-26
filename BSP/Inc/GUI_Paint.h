@@ -177,6 +177,7 @@ typedef struct {
     UBYTE  Min;   //0 - 59
     UBYTE  Sec;   //0 - 59
     UBYTE WeekDay;
+    UBYTE DST;    //0 - 1
 } PAINT_TIME;
 extern PAINT_TIME sPaint_time;
 
