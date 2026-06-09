@@ -57,6 +57,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define CMD_BAT_MEAS_Pin GPIO_PIN_1
+#define CMD_BAT_MEAS_GPIO_Port GPIOC
 #define RST_Pin GPIO_PIN_1
 #define RST_GPIO_Port GPIOA
 #define DC_Pin GPIO_PIN_2

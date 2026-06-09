@@ -10,6 +10,7 @@
 
 #include "stm32l4xx_hal.h"
 #include "GUI_Paint.h"
+#include "build_time.h"
 
 #define rtc_refresh 2
 

@@ -9,6 +9,12 @@
 
 SM_BATTERY_t SM_BATTERY;
 volatile uint8_t Srv_battery_flag;
+extern ADC_HandleTypeDef hadc1;
+
+#define MAX_INDEX 2
+static uint32_t value;
+static uint8_t index = 0;
+static uint32_t pc[MAX_INDEX];
 
 typedef struct
 {
@@ -20,15 +26,8 @@ typedef struct
    Configuration hardware
    ========================= */
 
-/* Chute MOSFET anti inversion */
-#define BATTERY_DIODE_DROP     0.30f
-
-/* Pont diviseur */
-#define R1                     33000.0f
-#define R2                     10000.0f
-
 /* Gain du pont diviseur */
-#define ADC_DIVIDER_GAIN       (R2 / (R1 + R2))
+#define ADC_DIVIDER_GAIN       1.303f
 
 /* Référence ADC */
 #define ADC_VREF               3.300f
@@ -65,25 +64,56 @@ BatteryPoint batteryTable[20] =
     {3.20, 0}
 };
 
-/* =========================
-   Conversion ADC -> tension batterie
-   ========================= */
-
-float Battery_ADCToVoltage(uint16_t adc)
+uint8_t Battery_ADCToPercentage(uint32_t adc)
 {
     float adcVoltage;
     float batteryVoltage;
+    uint8_t batteryPercentage;
+    uint8_t i;
 
-    /* tension réellement vue par l'ADC */
+    /* Conversion ADC -> tension ADC */
     adcVoltage = ((float)adc * ADC_VREF) / ADC_MAX;
 
-    /* remonte le pont diviseur */
-    batteryVoltage = adcVoltage / ADC_DIVIDER_GAIN;
+    /* Compensation pont diviseur
+       ADC_DIVIDER_GAIN est déjà inversé */
+    batteryVoltage = adcVoltage * ADC_DIVIDER_GAIN;
 
-    /* rajoute la chute du MOSFET */
-    batteryVoltage += BATTERY_DIODE_DROP;
+    /* Saturation haute */
+    if (batteryVoltage >= batteryTable[0].voltage)
+    {
+        return 100;
+    }
 
-    return batteryVoltage;
+    /* Saturation basse */
+    if (batteryVoltage <= batteryTable[19].voltage)
+    {
+        return 0;
+    }
+
+    /* Recherche dans la LUT */
+    for (i = 0; i < 19; i++)
+    {
+        float vHigh = batteryTable[i].voltage;
+        float vLow  = batteryTable[i + 1].voltage;
+
+        uint8_t pHigh = batteryTable[i].percent;
+        uint8_t pLow  = batteryTable[i + 1].percent;
+
+        /* Tension trouvée dans l'intervalle */
+        if ((batteryVoltage <= vHigh) && (batteryVoltage >= vLow))
+        {
+            float ratio;
+
+            /* Interpolation linéaire */
+            ratio = (batteryVoltage - vLow) / (vHigh - vLow);
+
+            batteryPercentage = pLow + (uint8_t)((pHigh - pLow) * ratio);
+
+            return batteryPercentage;
+        }
+    }
+
+    return 0;
 }
 
 void Srv_battery_init(Station_meteo_t *ctx){
@@ -97,10 +127,46 @@ void Srv_battery_process(Station_meteo_t *ctx){
 	case SM_BATTERY_START:
 		if(Srv_battery_flag == 1){
 			Srv_battery_flag = 0;
-			SM_BATTERY = SM_BATTERY_WAIT;
+
+			index++;
+			if(index == MAX_INDEX)
+			{
+				index = 0;
+			}
+
+			HAL_GPIO_WritePin(CMD_BAT_MEAS_GPIO_Port, CMD_BAT_MEAS_Pin, GPIO_PIN_SET);
+
+			SM_BATTERY = SM_BATTERY_MEASURE;
 		}
 		break;
-	case SM_BATTERY_WAIT:
+	case SM_BATTERY_MEASURE:
+
+		HAL_ADC_Start(&hadc1);
+
+		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+
+		value = HAL_ADC_GetValue(&hadc1);
+
+		HAL_GPIO_WritePin(CMD_BAT_MEAS_GPIO_Port, CMD_BAT_MEAS_Pin, GPIO_PIN_RESET);
+
+		pc[index] = Battery_ADCToPercentage(value);
+
+		bool all_equal = true;
+
+		for (int i = 1; i < MAX_INDEX; i++)
+		{
+		    if (pc[i] != pc[0])
+		    {
+		        all_equal = false;
+		        break;
+		    }
+		}
+
+		if (all_equal)
+		{
+		    ctx->battery.batterypc = pc[0];
+		}
+
 		SM_BATTERY = SM_BATTERY_START;
 		break;
 	}
