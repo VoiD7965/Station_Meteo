@@ -9,6 +9,7 @@ C_SRCS += \
 ../Services/Src/Srv_battery.c \
 ../Services/Src/Srv_screen.c \
 ../Services/Src/Srv_sensors.c \
+../Services/Src/Srv_sleep.c \
 ../Services/Src/Srv_time.c 
 
 OBJS += \
@@ -16,6 +17,7 @@ OBJS += \
 ./Services/Src/Srv_battery.o \
 ./Services/Src/Srv_screen.o \
 ./Services/Src/Srv_sensors.o \
+./Services/Src/Srv_sleep.o \
 ./Services/Src/Srv_time.o 
 
 C_DEPS += \
@@ -23,6 +25,7 @@ C_DEPS += \
 ./Services/Src/Srv_battery.d \
 ./Services/Src/Srv_screen.d \
 ./Services/Src/Srv_sensors.d \
+./Services/Src/Srv_sleep.d \
 ./Services/Src/Srv_time.d 
 
 
@@ -33,7 +36,7 @@ Services/Src/%.o Services/Src/%.su Services/Src/%.cyclo: ../Services/Src/%.c Ser
 clean: clean-Services-2f-Src
 
 clean-Services-2f-Src:
-	-$(RM) ./Services/Src/EPD_4in26_test.cyclo ./Services/Src/EPD_4in26_test.d ./Services/Src/EPD_4in26_test.o ./Services/Src/EPD_4in26_test.su ./Services/Src/Srv_battery.cyclo ./Services/Src/Srv_battery.d ./Services/Src/Srv_battery.o ./Services/Src/Srv_battery.su ./Services/Src/Srv_screen.cyclo ./Services/Src/Srv_screen.d ./Services/Src/Srv_screen.o ./Services/Src/Srv_screen.su ./Services/Src/Srv_sensors.cyclo ./Services/Src/Srv_sensors.d ./Services/Src/Srv_sensors.o ./Services/Src/Srv_sensors.su ./Services/Src/Srv_time.cyclo ./Services/Src/Srv_time.d ./Services/Src/Srv_time.o ./Services/Src/Srv_time.su
+	-$(RM) ./Services/Src/EPD_4in26_test.cyclo ./Services/Src/EPD_4in26_test.d ./Services/Src/EPD_4in26_test.o ./Services/Src/EPD_4in26_test.su ./Services/Src/Srv_battery.cyclo ./Services/Src/Srv_battery.d ./Services/Src/Srv_battery.o ./Services/Src/Srv_battery.su ./Services/Src/Srv_screen.cyclo ./Services/Src/Srv_screen.d ./Services/Src/Srv_screen.o ./Services/Src/Srv_screen.su ./Services/Src/Srv_sensors.cyclo ./Services/Src/Srv_sensors.d ./Services/Src/Srv_sensors.o ./Services/Src/Srv_sensors.su ./Services/Src/Srv_sleep.cyclo ./Services/Src/Srv_sleep.d ./Services/Src/Srv_sleep.o ./Services/Src/Srv_sleep.su ./Services/Src/Srv_time.cyclo ./Services/Src/Srv_time.d ./Services/Src/Srv_time.o ./Services/Src/Srv_time.su
 
 .PHONY: clean-Services-2f-Src
 

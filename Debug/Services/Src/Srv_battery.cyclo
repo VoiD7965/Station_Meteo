@@ -1,3 +1,0 @@
-../Services/Src/Srv_battery.c:67:9:Battery_ADCToPercentage	6
-../Services/Src/Srv_battery.c:119:6:Srv_battery_init	1
-../Services/Src/Srv_battery.c:124:6:Srv_battery_process	8

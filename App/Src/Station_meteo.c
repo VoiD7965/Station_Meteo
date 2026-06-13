@@ -28,6 +28,7 @@ void Station_meteo_init(Station_meteo_t *ctx)
     ctx->battery.batterypc = 100;
 
     SYS_RTC_Init(ctx);
+    HAL_RTCEx_SetSmoothCalib(&hrtc, RTC_SMOOTHCALIB_PERIOD_32SEC, RTC_SMOOTHCALIB_PLUSPULSES_RESET, 68); //todo
 
     if(ctx->datetime.DST)
     {
@@ -42,11 +43,13 @@ void Station_meteo_init(Station_meteo_t *ctx)
 	Srv_battery_init(ctx);
 	Srv_time_init(ctx);
 	Srv_screen_init(ctx);
+	Srv_sleep_init(ctx);
 }
 
 void Station_meteo_process(Station_meteo_t *ctx)
 {
 	if(Scheduler_20ms_Task()){
+
 		//input
 		Srv_sensors_process(ctx);
 		Srv_battery_process(ctx);
@@ -56,5 +59,8 @@ void Station_meteo_process(Station_meteo_t *ctx)
 
 		//output
 		Srv_screen_process(ctx);
+
+		Srv_sleep_process(ctx);
+
 	}
 }

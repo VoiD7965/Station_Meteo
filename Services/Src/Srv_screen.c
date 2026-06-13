@@ -95,113 +95,22 @@ void Srv_screen_process(Station_meteo_t *ctx)
         {
             Srv_screen_flag = 0;
 
-            Paint_Clear(WHITE);
-
-            _draw_static_ui();
-            _draw_dynamic_data(ctx);
-
-            EPD_4in26_Display_Part(BlackImage, 0, 480, EPD_4in26_WIDTH, 480);
-
             SM_SCREEN = SM_SCREEN_WAIT;
         }
         break;
 
     case SM_SCREEN_WAIT:
+
+        Paint_Clear(WHITE);
+
+        _draw_static_ui();
+        _draw_dynamic_data(ctx);
+
+        EPD_4in26_Display_Part(BlackImage, 0, 480, EPD_4in26_WIDTH, 480);
+
         SM_SCREEN = SM_SCREEN_START;
         break;
 
-//        case SM_SCREEN_WAIT:
-//            if (ctx->datetime.Hour != last_hour || Srv_screen_flag == 1)
-//                SM_SCREEN = SM_SCREEN_HOURLY;
-//            else if (ctx->datetime.Min != last_minute)
-//                SM_SCREEN = SM_SCREEN_PARTIAL;
-//            break;
-//
-//        case SM_SCREEN_HOURLY:
-//            EPD_4in26_Init(); // FULL INIT (Reset physique + Flash noir)
-//            Paint_Clear(WHITE);
-//            _draw_static_ui();
-//            _draw_dynamic_data(ctx);
-//            EPD_4in26_Display_Base(BlackImage);
-//
-//            last_hour = ctx->datetime.Hour;
-//            last_minute = ctx->datetime.Min;
-//            Srv_screen_flag = 0;
-//            SM_SCREEN = SM_SCREEN_WAIT;
-//            break;
-//
-//        case SM_SCREEN_PARTIAL:
-//            // --- GOMMAGE DE LA RAM (Rectangles blancs) ---
-//            Paint_DrawRectangle(0, 0, 800, 63, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);      // Header
-//            Paint_DrawRectangle(0, 67, 800, 248, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);    // Heure
-//            Paint_DrawRectangle(25, 330, 250, 410, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);  // Temp
-//            Paint_DrawRectangle(270, 330, 530, 410, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL); // Press
-//            Paint_DrawRectangle(540, 330, 780, 410, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL); // Humid
-//
-//            _draw_dynamic_data(ctx);
-//
-//            // On n'appelle PAS Init_Partial si on n'utilise pas le Sleep
-//            // On envoie directement les données avec la fonction sans flash
-//            EPD_4in26_Display_Partial_True(BlackImage);
-//
-//            last_minute = ctx->datetime.Min;
-//            SM_SCREEN = SM_SCREEN_WAIT;
-//            break;
     }
 }
 
-//void EPD_display_temperature(Station_meteo_t *ctx)
-//{
-//    static UBYTE *BlackImage;
-//    static int init_done = 0;
-//    char text[16];
-//
-//    if (!init_done)
-//    {
-//        DEV_Module_Init();
-//
-//        EPD_4in26_Init();
-//        EPD_4in26_Clear();
-//
-//        UDOUBLE Imagesize = ((EPD_4in26_WIDTH % 8 == 0) ? (EPD_4in26_WIDTH / 8) : (EPD_4in26_WIDTH / 8 + 1)) * EPD_4in26_HEIGHT;
-//
-//        BlackImage = (UBYTE *)malloc(Imagesize);
-//
-//        Paint_NewImage(BlackImage, EPD_4in26_WIDTH, EPD_4in26_HEIGHT, 0, WHITE);
-//
-//        init_done = 1;
-//    }
-//
-//    /* format temperature */
-//    sprintf(text, "%.1f C", ctx->sensors.temperature); //Miscellaneous : -u _printf_float
-//
-//    /* draw */
-//    Paint_SelectImage(BlackImage);
-//    Paint_Clear(WHITE);
-//
-//    Paint_DrawString_EN(20, 100, text, &Font24, BLACK, WHITE);
-//
-//    EPD_4in26_Display_Base(BlackImage);
-//
-//    DEV_Delay_ms(1000);
-//}
-//
-//void EPD_test2()
-//{
-//    UBYTE *BlackImage;
-//    UDOUBLE Imagesize;
-//
-//    DEV_Module_Init();
-//
-//    EPD_4in26_Init();
-//    EPD_4in26_Clear();
-//
-//    Imagesize = ((EPD_4in26_WIDTH % 8 == 0) ? (EPD_4in26_WIDTH / 8) : (EPD_4in26_WIDTH / 8 + 1)) * EPD_4in26_HEIGHT;
-//
-//    BlackImage = (UBYTE *)malloc(Imagesize);
-//
-//    Paint_NewImage(BlackImage, EPD_4in26_WIDTH, EPD_4in26_HEIGHT, 0, WHITE);
-//    Paint_SelectImage(BlackImage);
-//    Paint_Clear(WHITE);
-//
-//}

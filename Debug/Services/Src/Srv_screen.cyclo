@@ -1,4 +1,0 @@
-../Services/Src/Srv_screen.c:24:13:_draw_static_ui	1
-../Services/Src/Srv_screen.c:39:13:_draw_dynamic_data	4
-../Services/Src/Srv_screen.c:70:6:Srv_screen_init	2
-../Services/Src/Srv_screen.c:87:6:Srv_screen_process	4

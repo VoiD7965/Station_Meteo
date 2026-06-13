@@ -35,6 +35,7 @@
 "./Services/Src/Srv_battery.o"
 "./Services/Src/Srv_screen.o"
 "./Services/Src/Srv_sensors.o"
+"./Services/Src/Srv_sleep.o"
 "./Services/Src/Srv_time.o"
 "./System/Src/ImageData.o"
 "./System/Src/font12.o"

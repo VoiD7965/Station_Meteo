@@ -12,7 +12,7 @@
 #include "GUI_Paint.h"
 #include "build_time.h"
 
-#define rtc_refresh 2
+#define rtc_refresh 5
 
 typedef struct
 {

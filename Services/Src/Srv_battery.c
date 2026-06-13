@@ -11,10 +11,13 @@ SM_BATTERY_t SM_BATTERY;
 volatile uint8_t Srv_battery_flag;
 extern ADC_HandleTypeDef hadc1;
 
-#define MAX_INDEX 2
+#define MAX_INDEX 1
 static uint32_t value;
 static uint8_t index = 0;
 static uint32_t pc[MAX_INDEX];
+
+uint32_t t1 = 0;
+uint32_t t2 = 0;
 
 typedef struct
 {
@@ -63,6 +66,69 @@ BatteryPoint batteryTable[20] =
     {3.45, 10},
     {3.20, 0}
 };
+
+void Srv_battery_init(Station_meteo_t *ctx){
+	Srv_battery_flag = 1;
+
+	HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
+
+	SM_BATTERY = SM_BATTERY_START;
+}
+
+void Srv_battery_process(Station_meteo_t *ctx){
+
+	switch(SM_BATTERY){
+	case SM_BATTERY_START:
+		if(Srv_battery_flag == 1){
+			Srv_battery_flag = 0;
+
+			index++;
+			if(index == MAX_INDEX)
+			{
+				index = 0;
+			}
+
+			HAL_GPIO_WritePin(CMD_BAT_MEAS_GPIO_Port, CMD_BAT_MEAS_Pin, GPIO_PIN_SET); //todo tester dans le prochain state si adc stable
+
+			SM_BATTERY = SM_BATTERY_MEASURE;
+		}
+		break;
+
+	case SM_BATTERY_MEASURE:
+
+		HAL_ADC_Start(&hadc1);
+
+		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+
+		value = HAL_ADC_GetValue(&hadc1);
+
+		HAL_GPIO_WritePin(CMD_BAT_MEAS_GPIO_Port, CMD_BAT_MEAS_Pin, GPIO_PIN_RESET);
+
+		//uint32_t delta = t2 - t1;
+
+		pc[index] = Battery_ADCToPercentage(value);
+
+		bool all_equal = true;
+
+		for (int i = 1; i < MAX_INDEX; i++)
+		{
+		    if (pc[i] != pc[0])
+		    {
+		        all_equal = false;
+		        break;
+		    }
+		}
+
+		if (all_equal)
+		{
+		    ctx->battery.batterypc = pc[0];
+		}
+
+		SM_BATTERY = SM_BATTERY_START;
+		break;
+	}
+
+}
 
 uint8_t Battery_ADCToPercentage(uint32_t adc)
 {
@@ -114,61 +180,4 @@ uint8_t Battery_ADCToPercentage(uint32_t adc)
     }
 
     return 0;
-}
-
-void Srv_battery_init(Station_meteo_t *ctx){
-	Srv_battery_flag = 1;
-	SM_BATTERY = SM_BATTERY_START;
-}
-
-void Srv_battery_process(Station_meteo_t *ctx){
-
-	switch(SM_BATTERY){
-	case SM_BATTERY_START:
-		if(Srv_battery_flag == 1){
-			Srv_battery_flag = 0;
-
-			index++;
-			if(index == MAX_INDEX)
-			{
-				index = 0;
-			}
-
-			HAL_GPIO_WritePin(CMD_BAT_MEAS_GPIO_Port, CMD_BAT_MEAS_Pin, GPIO_PIN_SET);
-
-			SM_BATTERY = SM_BATTERY_MEASURE;
-		}
-		break;
-	case SM_BATTERY_MEASURE:
-
-		HAL_ADC_Start(&hadc1);
-
-		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-
-		value = HAL_ADC_GetValue(&hadc1);
-
-		HAL_GPIO_WritePin(CMD_BAT_MEAS_GPIO_Port, CMD_BAT_MEAS_Pin, GPIO_PIN_RESET);
-
-		pc[index] = Battery_ADCToPercentage(value);
-
-		bool all_equal = true;
-
-		for (int i = 1; i < MAX_INDEX; i++)
-		{
-		    if (pc[i] != pc[0])
-		    {
-		        all_equal = false;
-		        break;
-		    }
-		}
-
-		if (all_equal)
-		{
-		    ctx->battery.batterypc = pc[0];
-		}
-
-		SM_BATTERY = SM_BATTERY_START;
-		break;
-	}
-
 }

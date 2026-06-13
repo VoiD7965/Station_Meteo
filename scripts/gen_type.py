@@ -31,17 +31,7 @@ OUT_PATH = os.path.join(PROJECT_DIR, "Core", "Inc", "build_time.h")
 # WEEKDAY STM32 MAP
 # -------------------------------
 
-weekday_map = {
-    0: 1,
-    1: 2,
-    3: 3,
-    4: 4,
-    5: 5,
-    6: 6,
-    7: 7
-}
-
-stm_weekday = weekday_map[now.weekday()]
+stm_weekday = now.weekday() + 1
 
 
 # -------------------------------
