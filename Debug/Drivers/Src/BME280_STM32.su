@@ -1,0 +1,8 @@
+../Drivers/Src/BME280_STM32.c:66:5:BME280_Config	48	static
+../Drivers/Src/BME280_STM32.c:134:6:BME280_WakeUP	32	static
+../Drivers/Src/BME280_STM32.c:153:6:BME280_Measure	24	static
+../Drivers/Src/BME280_STM32.c:186:12:TrimRead	56	static
+../Drivers/Src/BME280_STM32.c:229:12:BMEReadRaw	32	static
+../Drivers/Src/BME280_STM32.c:259:16:BME280_compensate_T_int32	32	static
+../Drivers/Src/BME280_STM32.c:274:17:BME280_compensate_P_int64	328	static
+../Drivers/Src/BME280_STM32.c:330:17:bme280_compensate_H_int32	24	static
