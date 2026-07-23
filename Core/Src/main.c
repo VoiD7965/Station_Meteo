@@ -56,10 +56,7 @@ SPI_HandleTypeDef hspi1;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_I2C1_Init(void);
-static void MX_SPI1_Init(void);
 static void MX_RTC_Init(void);
-static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -151,7 +148,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 1;
+  RCC_OscInitStruct.PLL.PLLM = 2;
   RCC_OscInitStruct.PLL.PLLN = 10;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
@@ -170,7 +167,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
@@ -181,7 +178,7 @@ void SystemClock_Config(void)
   * @param None
   * @retval None
   */
-static void MX_ADC1_Init(void)
+void MX_ADC1_Init(void)
 {
 
   /* USER CODE BEGIN ADC1_Init 0 */
@@ -252,7 +249,7 @@ static void MX_ADC1_Init(void)
   * @param None
   * @retval None
   */
-static void MX_I2C1_Init(void)
+void MX_I2C1_Init(void)
 {
 
   /* USER CODE BEGIN I2C1_Init 0 */
@@ -263,7 +260,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x10D19CE4;
+  hi2c1.Init.Timing = 0x00D09BE3;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -364,7 +361,7 @@ static void MX_RTC_Init(void)
   * @param None
   * @retval None
   */
-static void MX_SPI1_Init(void)
+void MX_SPI1_Init(void)
 {
 
   /* USER CODE BEGIN SPI1_Init 0 */
@@ -416,6 +413,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(CMD_BAT_MEAS_GPIO_Port, CMD_BAT_MEAS_Pin, GPIO_PIN_RESET);
@@ -426,12 +424,30 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, DC_Pin|SPI_CS_Pin|PWR_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pins : PC13 PC0 PC2 PC4
+                           PC5 PC6 PC7 PC8
+                           PC9 PC10 PC11 PC12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_0|GPIO_PIN_2|GPIO_PIN_4
+                          |GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8
+                          |GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
   /*Configure GPIO pin : CMD_BAT_MEAS_Pin */
   GPIO_InitStruct.Pin = CMD_BAT_MEAS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(CMD_BAT_MEAS_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PA0 PA8 PA9 PA10
+                           PA11 PA12 PA15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10
+                          |GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : RST_Pin DC_Pin SPI_CS_Pin PWR_Pin */
   GPIO_InitStruct.Pin = RST_Pin|DC_Pin|SPI_CS_Pin|PWR_Pin;
@@ -445,6 +461,24 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BUSY_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB0 PB1 PB2 PB10
+                           PB11 PB12 PB13 PB14
+                           PB15 PB3 PB5 PB6
+                           PB7 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_10
+                          |GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14
+                          |GPIO_PIN_15|GPIO_PIN_3|GPIO_PIN_5|GPIO_PIN_6
+                          |GPIO_PIN_7;
+  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PD2 */
+  GPIO_InitStruct.Pin = GPIO_PIN_2;
+  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 

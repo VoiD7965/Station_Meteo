@@ -15,9 +15,6 @@ volatile uint8_t Srv_screen_flag;
 UBYTE *BlackImage = NULL;
 UDOUBLE Imagesize;
 
-//static int last_minute = -1;
-//static int last_hour = -1;
-
 const char* noms_jours[] = {"ERR", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"};
 
 // --- DESSIN DU DÉCOR FIXE ---
@@ -57,14 +54,14 @@ static void _draw_dynamic_data(Station_meteo_t *ctx)
     Paint_DrawString_EN(225, 125, buf, &Font72, BLACK, WHITE);
 
     // Capteurs + Unités (pour éviter qu'elles s'effacent)
-    sprintf(buf, "%.1f ~C", ctx->sensors.temperature);
-    Paint_DrawString_EN(30, 340, buf, &Font24, BLACK, WHITE);
+    sprintf(buf, "%.1f~C", ctx->sensors.temperature);
+    Paint_DrawString_EN(30, 340, buf, &Font36, BLACK, WHITE);
 
-    sprintf(buf, "%d hPa", ctx->sensors.pressure);
-    Paint_DrawString_EN(275, 340, buf, &Font24, BLACK, WHITE);
+    sprintf(buf, "%dhPa", ctx->sensors.pressure);
+    Paint_DrawString_EN(275, 340, buf, &Font36, BLACK, WHITE);
 
-    sprintf(buf, "%d %%", ctx->sensors.humidity);
-    Paint_DrawString_EN(600, 340, buf, &Font24, BLACK, WHITE);
+    sprintf(buf, "%d%%", ctx->sensors.humidity);
+    Paint_DrawString_EN(600, 340, buf, &Font36, BLACK, WHITE);
 }
 
 void Srv_screen_init(Station_meteo_t *ctx)
@@ -95,6 +92,10 @@ void Srv_screen_process(Station_meteo_t *ctx)
         {
             Srv_screen_flag = 0;
 
+            DEV_Module_Init();
+
+            ctx->sleep.screenIsReadyToSleep = 0;
+
             SM_SCREEN = SM_SCREEN_WAIT;
         }
         break;
@@ -107,6 +108,13 @@ void Srv_screen_process(Station_meteo_t *ctx)
         _draw_dynamic_data(ctx);
 
         EPD_4in26_Display_Part(BlackImage, 0, 480, EPD_4in26_WIDTH, 480);
+
+	    //DEV_Module_Exit();
+        DEV_Digital_Write(EPD_DC_PIN, 0);
+        DEV_Digital_Write(EPD_CS_PIN, 0);
+    	DEV_Digital_Write(EPD_PWR_PIN, 0);
+
+        ctx->sleep.screenIsReadyToSleep = 1;
 
         SM_SCREEN = SM_SCREEN_START;
         break;

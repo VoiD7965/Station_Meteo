@@ -27,6 +27,8 @@ void Srv_time_process(Station_meteo_t *ctx)
             {
                 Srv_time_flag = 0;
 
+                ctx->sleep.timeIsReadyToSleep = 0;
+
                 HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
                 HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
 
@@ -98,6 +100,7 @@ void Srv_time_process(Station_meteo_t *ctx)
 
         case SM_TIME_WAIT:
 
+        	ctx->sleep.timeIsReadyToSleep = 1;
             SM_TIME = SM_TIME_START;
 
             break;

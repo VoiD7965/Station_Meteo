@@ -81,14 +81,7 @@ void Srv_battery_process(Station_meteo_t *ctx){
 	case SM_BATTERY_START:
 		if(Srv_battery_flag == 1){
 			Srv_battery_flag = 0;
-
-			index++;
-			if(index == MAX_INDEX)
-			{
-				index = 0;
-			}
-
-			HAL_GPIO_WritePin(CMD_BAT_MEAS_GPIO_Port, CMD_BAT_MEAS_Pin, GPIO_PIN_SET); //todo tester dans le prochain state si adc stable
+			ctx->sleep.batteryIsReadyToSleep = 0;
 
 			SM_BATTERY = SM_BATTERY_MEASURE;
 		}
@@ -96,17 +89,26 @@ void Srv_battery_process(Station_meteo_t *ctx){
 
 	case SM_BATTERY_MEASURE:
 
+		HAL_GPIO_WritePin(CMD_BAT_MEAS_GPIO_Port, CMD_BAT_MEAS_Pin, GPIO_PIN_SET);
+
 		HAL_ADC_Start(&hadc1);
 
-		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+		HAL_ADC_PollForConversion(&hadc1, 100);
 
 		value = HAL_ADC_GetValue(&hadc1);
 
+		HAL_ADC_Stop(&hadc1);
+
 		HAL_GPIO_WritePin(CMD_BAT_MEAS_GPIO_Port, CMD_BAT_MEAS_Pin, GPIO_PIN_RESET);
 
-		//uint32_t delta = t2 - t1;
-
 		pc[index] = Battery_ADCToPercentage(value);
+
+		index++;
+
+		if(index >= MAX_INDEX)
+		{
+			index = 0;
+		}
 
 		bool all_equal = true;
 
@@ -114,18 +116,22 @@ void Srv_battery_process(Station_meteo_t *ctx){
 		{
 		    if (pc[i] != pc[0])
 		    {
-		        all_equal = false;
+		    	all_equal = false;
 		        break;
 		    }
 		}
 
 		if (all_equal)
 		{
-		    ctx->battery.batterypc = pc[0];
+			ctx->battery.batterypc = pc[0];
+
 		}
 
+		ctx->sleep.batteryIsReadyToSleep = 1;
 		SM_BATTERY = SM_BATTERY_START;
+
 		break;
+
 	}
 
 }

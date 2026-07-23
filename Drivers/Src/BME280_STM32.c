@@ -22,7 +22,7 @@
 
 static int TrimRead(void);
 static int BMEReadRaw(void);
-static int32_t BME280_compensate_T_int32(int32_t adc_T);
+int32_t BME280_compensate_T_int32(int32_t adc_T);
 static uint32_t BME280_compensate_P_int64(int32_t adc_P);
 static uint32_t BME280_compensate_P_int32(int32_t adc_P);
 static uint32_t bme280_compensate_H_int32(int32_t adc_H);
@@ -256,7 +256,7 @@ static int BMEReadRaw(void)
 /* Returns temperature in DegC, resolution is 0.01 DegC. Output value of “5123” equals 51.23 DegC.
    t_fine carries fine temperature as global value
 */
-static int32_t BME280_compensate_T_int32(int32_t adc_T)
+int32_t BME280_compensate_T_int32(int32_t adc_T)
 {
 	int32_t var1, var2, T;
 	var1 = ((((adc_T>>3) - ((int32_t)dig_T1<<1))) * ((int32_t)dig_T2)) >> 11;

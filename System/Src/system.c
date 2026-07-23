@@ -59,6 +59,6 @@ void SYS_RTC_Init(Station_meteo_t *ctx)
     Error_Handler();
   }
 
-  HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
+  HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, rtc_refresh, RTC_WAKEUPCLOCK_CK_SPRE_16BITS);
 
 }

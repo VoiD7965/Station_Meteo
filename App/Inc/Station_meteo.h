@@ -12,7 +12,7 @@
 #include "GUI_Paint.h"
 #include "build_time.h"
 
-#define rtc_refresh 5
+#define rtc_refresh 1 //flash à 42s
 
 typedef struct
 {
@@ -30,9 +30,19 @@ typedef struct
 
 typedef struct
 {
+	uint8_t batteryIsReadyToSleep;
+	uint8_t screenIsReadyToSleep;
+	uint8_t sensorsIsReadyToSleep;
+	uint8_t timeIsReadyToSleep;
+
+} sleep_t;
+
+typedef struct
+{
     sensors_t sensors;
     PAINT_TIME datetime;
     battery_t battery;
+    sleep_t sleep;
 
 } Station_meteo_t;
 

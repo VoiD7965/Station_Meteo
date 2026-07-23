@@ -25,10 +25,23 @@ void Station_meteo_init(Station_meteo_t *ctx)
     ctx->datetime.Year = BUILD_YEAR;
     ctx->datetime.DST = BUILD_DST; // 1 = heure d'été, 0 = heure d'hiver
 
-    ctx->battery.batterypc = 100;
+    ctx->battery.batterypc = 0;
+
+    ctx->sleep.batteryIsReadyToSleep = 0;
+    ctx->sleep.screenIsReadyToSleep = 0;
+    ctx->sleep.sensorsIsReadyToSleep = 0;
+    ctx->sleep.timeIsReadyToSleep = 0;
 
     SYS_RTC_Init(ctx);
-    HAL_RTCEx_SetSmoothCalib(&hrtc, RTC_SMOOTHCALIB_PERIOD_32SEC, RTC_SMOOTHCALIB_PLUSPULSES_RESET, 68); //todo
+
+    //calibration
+    //HAL_RTCEx_SetSmoothCalib(&hrtc, RTC_SMOOTHCALIB_PERIOD_32SEC, RTC_SMOOTHCALIB_PLUSPULSES_RESET, 0); //todo
+    HAL_RTCEx_SetSmoothCalib(
+        &hrtc,
+        RTC_SMOOTHCALIB_PERIOD_32SEC,
+        RTC_SMOOTHCALIB_PLUSPULSES_RESET,  // CP = 0
+        97                                // CM = 97
+    );
 
     if(ctx->datetime.DST)
     {
@@ -45,6 +58,7 @@ void Station_meteo_init(Station_meteo_t *ctx)
 	Srv_screen_init(ctx);
 	Srv_sleep_init(ctx);
 }
+
 
 void Station_meteo_process(Station_meteo_t *ctx)
 {
